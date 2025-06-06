@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guardian | Document Marine Wildlife</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="../css/picture.css"> 
+   
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Coastal Guardian</a>
+            <button class="return-btn" onclick="returnToWelcome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Return to Dashboard
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="header-section">
+        <div class="floating-creatures">
+            <div class="creature">🐬</div>
+            <div class="creature">🐠</div>
+            <div class="creature">🐙</div>
+            <div class="creature">🦑</div>
+            <div class="creature">🐡</div>
+        </div>
+        <div class="container">
+            <h1 class="page-title fade-in">Document Marine Wildlife</h1>
+            <p class="page-subtitle fade-in">
+                Help marine researchers track biodiversity by documenting wildlife sightings. Your observations contribute to vital conservation research and ecosystem monitoring.
+            </p>
+            <div class="reward-badge fade-in">
+                <span>🪙 Earn <strong>+30 CGT</strong> for each verified wildlife sighting</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container fade-in">
+                <div class="form-header">
+                    <div class="form-icon">🐋</div>
+                    <h2 class="form-title">Marine Wildlife Sighting Report</h2>
+                </div>
+                <div class="form-content">
+                    <form id="wildlifeForm">
+                        <!-- Species Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Species Information</label>
+                            <div class="species-input-container">
+                                <select id="speciesCategory" class="form-select" required>
+                                    <option value="" disabled selected>Select category</option>
+                                    <option value="fish">Fish</option>
+                                    <option value="mammal">Marine Mammal</option>
+                                    <option value="reptile">Marine Reptile</option>
+                                    <option value="bird">Seabird</option>
+                                    <option value="invertebrate">Invertebrate</option>
+                                    <option value="coral">Coral</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <input type="text" id="speciesName" class="form-input" placeholder="Species name (if known)" required>
+                            </div>
+                            <p class="form-help">Select a category and enter the species name if known, or describe it</p>
+                            
+                            <!-- Species Info Box (shows when certain species are selected) -->
+                            <div class="species-info" id="speciesInfo">
+                                <h4 class="species-info-title">Species Information</h4>
+                                <p class="species-info-text" id="speciesInfoText">
+                                    Select a common species to see more information.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Date and Time -->
+                        <div class="form-group">
+                            <label class="form-label">Date and Time of Sighting</label>
+                            <div class="datetime-container">
+                                <div class="form-group">
+                                    <label class="form-label" for="sightingDate">Date</label>
+                                    <input type="date" id="sightingDate" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="sightingTime">Time</label>
+                                    <input type="time" id="sightingTime" class="form-input" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Location of Sighting</label>
+                            <div class="map-container">
+                                <div id="map"></div>
+                            </div>
+                            <div class="coordinates-display">
+                                <div class="coordinate-input">
+                                    <label class="form-label">Latitude</label>
+                                    <input type="text" id="latitude" class="form-input" placeholder="e.g. 16.0194" required>
+                                </div>
+                                <div class="coordinate-input">
+                                    <label class="form-label">Longitude</label>
+                                    <input type="text" id="longitude" class="form-input" placeholder="e.g. 120.2298" required>
+                                </div>
+                            </div>
+                            <p class="form-help">Click on the map to set the location or enter coordinates manually</p>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group">
+                            <label class="form-label" for="description">Behavior Observed</label>
+                            <textarea id="description" class="form-textarea" placeholder="Describe what the marine life was doing, how many you saw, and any notable behaviors..." required></textarea>
+                            <p class="form-help">Include details about behavior, estimated size, quantity, and any interactions observed</p>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="form-group">
+                            <label class="form-label">Photo/Video Evidence</label>
+                            <div class="file-upload">
+                                <div class="file-upload-icon">📷</div>
+                                <div class="file-upload-text">Drag & drop files or click to browse</div>
+                                <div class="file-upload-subtext">Upload photos or videos of the marine life (max 5 files, 10MB each)</div>
+                                <input type="file" id="fileUpload" multiple accept="image/*,video/*">
+                            </div>
+                            <div class="file-preview" id="filePreview">
+                                <div class="preview-grid" id="previewGrid"></div>
+                            </div>
+                        </div>
+
+                        <!-- Wallet Address -->
+                        <div class="form-group">
+                            <label class="form-label" for="walletAddress">Wallet Address for Rewards</label>
+                            <input type="text" id="walletAddress" class="form-input" placeholder="0x..." required>
+                            <p class="form-help">Enter your Web3 wallet address to receive CGT tokens upon verification</p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                            Submit Wildlife Sighting
+                        </button>
+                    </form>
+
+                    <!-- Verification Note -->
+                    <div class="verification-note">
+                        <h3 class="verification-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            Verification Process
+                        </h3>
+                        <p class="verification-text">
+                            All submitted wildlife sightings are reviewed by marine biologists to verify species identification and documentation accuracy. Verified sightings earn 30 CGT tokens as a reward for your contribution to marine research.
+                        </p>
+                        <p class="verification-text">
+                            Your data helps researchers track migration patterns, population health, and biodiversity changes in our coastal ecosystems. This information is vital for conservation efforts and policy decisions.
+                        </p>
+                        <div class="blockchain-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                            Permanently Recorded On-Chain
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">Sighting Submitted Successfully!</h3>
+            <p class="modal-text">
+                Thank you for contributing to marine conservation research! Your wildlife sighting has been submitted and will be reviewed by our marine biologists. Upon verification, 30 CGT tokens will be transferred to your wallet.
+            </p>
+            <button class="modal-btn" onclick="closeModal()">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="../scripts/picture.js">
+        
+    </script>
+</body>
+</html>

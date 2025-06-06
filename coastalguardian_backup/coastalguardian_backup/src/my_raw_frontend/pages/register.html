@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Protection - Registration</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap"
+        rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/@dfinity/auth-client@0.12.0/lib/index.min.js" 
+            integrity="sha384-5n0qH1h1Y5YFk5q7J8pD94bw6F0X1tQ1q1jQ5Z5L5W5L5Q5Z5L5W5L5Q5Z5L5W5L"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/register.css">
+
+</head>
+
+<body>
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Registration Container -->
+    <div class="registration-container">
+        <!-- Header -->
+        <div class="registration-header">
+            <div class="logo">Coastal Protection</div>
+            <div class="registration-badge">Join the Movement</div>
+            <h1 class="registration-title">Create Your Account</h1>
+            <p class="registration-subtitle">Help protect our coastal ecosystems through Web3 technology</p>
+        </div>
+
+        <!-- Registration Form -->
+        <form class="registration-form" id="registrationForm"></form>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address"
+                required>
+            <div class="error-message">Please enter a valid email address</div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-input"
+                placeholder="Create a secure password" required>
+            <div class="error-message">Password must be at least 8 characters long</div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="form-input"
+                placeholder="Confirm your password" required>
+            <div class="error-message">Passwords do not match</div>
+        </div>
+
+        <!-- Location and Interest -->
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label" for="location">Location</label>
+                <select id="location" name="location" class="form-select" required>
+                    <option value="">Select your location</option>
+                    <option value="pangasinan">Lingayen</option>
+                    <option value="luzon">San Carlos</option>
+                    <option value="visayas">Bolinao</option>
+                    <option value="mindanao">Dagupan</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="interest">Primary Interest</label>
+                <select id="interest" name="interest" class="form-select" required>
+                    <option value="">Select interest</option>
+                    <option value="conservation">Marine Conservation</option>
+                    <option value="research">Research</option>
+                    <option value="education">Education</option>
+                    <option value="technology">Web3 Technology</option>
+                    <option value="community">Community Action</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Terms and Privacy -->
+        <div class="checkbox-group">
+            <input type="checkbox" id="terms" name="terms" class="checkbox-input" required>
+            <label for="terms" class="checkbox-label">
+                I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy
+                    Policy</a>
+            </label>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="newsletter" name="newsletter" class="checkbox-input">
+            <label for="newsletter" class="checkbox-label">
+                I want to receive updates about coastal protection initiatives and Web3 conservation projects
+            </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">
+            Create Account
+        </button>
+        </form>
+
+        <!-- Wallet Connection Section -->
+        <div class="wallet-section">
+            <div class="wallet-title">Or connect with your Web3 wallet</div>
+            <div class="wallet-buttons">
+                <button type="button" class="btn btn-secondary" id="connectWalletButton">
+                    Connect Plug Wallet
+                </button>
+                <button type="button" class="btn btn-secondary" id="connectIIButton">
+                    Connect with Internet Identity
+                </button>
+                <button type="button" class="btn btn-secondary" id="disconnectWalletButton" style="display: none;">
+                    Disconnect Wallet
+                </button>
+            </div>
+            <div id="walletStatus"></div>
+            <div id="principalId"></div>
+            <div id="balance"></div>
+        </div>
+
+        <script>
+            const connectWalletButton = document.getElementById("connectWalletButton");
+            const disconnectWalletButton = document.getElementById("disconnectWalletButton");
+            const walletStatus = document.getElementById("walletStatus");
+            const principalIdDiv = document.getElementById("principalId");
+            const balanceDiv = document.getElementById("balance");
+            const connectIIButton = document.getElementById("connectIIButton");
+
+            // Initialize auth client
+            let authClient;
+
+            async function initializeAuthClient() {
+                try {
+                    // Check if authClient is already initialized
+                    if (!authClient) {
+                        authClient = await window.authClient?.create({
+                            idleOptions: {
+                                disableIdle: true,
+                            }
+                        });
+                    }
+                    return authClient;
+                } catch (err) {
+                    console.error("Failed to initialize auth client:", err);
+                    walletStatus.innerText = "❌ Error initializing Internet Identity";
+                    return null;
+                }
+            }
+
+            // II Login Handler
+            connectIIButton.addEventListener("click", async () => {
+                const client = await initializeAuthClient();
+                if (!client) {
+                    walletStatus.innerText = "❌ Auth client initialization failed";
+                    return;
+                }
+
+                try {
+                    // Start login flow
+                    await client.login({
+                        identityProvider: "https://identity.ic0.app",
+                        onSuccess: async () => {
+                            await handleAuthenticated(client);
+                        },
+                        onError: (err) => {
+                            console.error("Login error:", err);
+                            walletStatus.innerText = "❌ Login failed: " + err;
+                        }
+                    });
+                } catch (err) {
+                    console.error("Login exception:", err);
+                    walletStatus.innerText = "❌ Error during login: " + err.message;
+                }
+            });
+
+            // Handle successful authentication
+            async function handleAuthenticated(client) {
+                try {
+                    const identity = client.getIdentity();
+                    const principal = identity.getPrincipal();
+
+                    principalIdDiv.innerText = "🔑 Principal ID: " + principal.toString();
+                    walletStatus.innerText = "✅ Authenticated with Internet Identity!";
+
+                    // Hide connect buttons, show disconnect
+                    connectWalletButton.style.display = "none";
+                    connectIIButton.style.display = "none";
+                    disconnectWalletButton.style.display = "inline-block";
+
+                    // Update disconnect handler
+                    updateDisconnectHandler();
+                } catch (err) {
+                    console.error("Authentication handling error:", err);
+                    walletStatus.innerText = "❌ Error handling authentication";
+                }
+            }
+
+            // Update disconnect handler
+            function updateDisconnectHandler() {
+                // Remove any existing listeners to prevent duplicates
+                disconnectWalletButton.replaceWith(disconnectWalletButton.cloneNode(true));
+                const newDisconnectButton = document.getElementById("disconnectWalletButton");
+
+                newDisconnectButton.addEventListener("click", async () => {
+                    try {
+                        // Handle II logout if authenticated
+                        const client = await initializeAuthClient();
+                        if (client && await client.isAuthenticated()) {
+                            await client.logout();
+                            walletStatus.innerText = "🔌 Logged out from Internet Identity";
+                        }
+
+                        // Clear UI
+                        principalIdDiv.innerText = "";
+                        balanceDiv.innerText = "";
+
+                        // Show appropriate connect buttons
+                        connectWalletButton.style.display = "inline-block";
+                        connectIIButton.style.display = "inline-block";
+                        newDisconnectButton.style.display = "none";
+                    } catch (err) {
+                        console.error("Logout error:", err);
+                        walletStatus.innerText = "❌ Error during logout";
+                    }
+                });
+            }
+
+            // Plug Wallet functionality remains the same
+            const whitelist = ["uqqxf-5h777-77774-qaaaa-cai"];
+            const host = "http://localhost:4943";
+
+            connectWalletButton.addEventListener("click", async () => {
+                if (window.ic && window.ic.plug) {
+                    try {
+                        const isConnected = await window.ic.plug.requestConnect({
+                            whitelist,
+                            host
+                        });
+
+                        if (!isConnected) {
+                            walletStatus.innerText = "❌ Failed to connect.";
+                            return;
+                        }
+
+                        const principal = await window.ic.plug.getPrincipal();
+                        const accountId = await window.ic.plug.requestAccountId();
+
+                        principalIdDiv.innerText = "🔑 Principal ID: " + principal.toText();
+                        balanceDiv.innerText = "💰 Wallet Address (Account ID): " + accountId;
+                        walletStatus.innerText = "✅ Connected to Plug Wallet!";
+
+                        connectWalletButton.style.display = "none";
+                        connectIIButton.style.display = "none";
+                        disconnectWalletButton.style.display = "inline-block";
+
+                    } catch (err) {
+                        console.error(err);
+                        walletStatus.innerText = "❌ Error connecting: " + err.message;
+                    }
+                } else {
+                    walletStatus.innerText = "🦊 Plug Wallet not found. Install the extension.";
+                }
+            });
+
+            // Initialize auth client on page load
+            document.addEventListener('DOMContentLoaded', async () => {
+                await initializeAuthClient();
+            });
+        </script>
+
+
+        <!-- Footer -->
+        <div class="registration-footer">
+            <p class="footer-text">
+                Already have an account? <a href="../index.html" id="loginLink">Sign in here</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

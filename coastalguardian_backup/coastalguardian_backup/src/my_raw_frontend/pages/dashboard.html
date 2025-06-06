@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guardian | Web3 Marine Conservation Platform</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../css/Home.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="logo">
+                <div class="logo-icon">🌊</div>
+                Coastal Guardian
+            </a>
+            <ul class="nav-links">
+                <li><a href="#marine-areas">Protected Areas</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#actions">Actions</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#leaderboard">Guardians</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="shop.html">Shop</a></li>
+            </ul>
+            <div class="wallet-section">
+                <div class="token-balance" id="tokenBalance" style="display: none;">
+                    <span>🏆</span>
+                    <span id="balanceAmount">0 CGT</span>
+                </div>
+                <button class="connect-wallet" id="connectWallet"
+                    onclick="window.location.href ='../index.html'">Logout</button>
+            </div>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">🌊 Web3 Marine Conservation Platform</div>
+            <h1>Protect Our Oceans, Earn Soulbound Tokens</h1>
+            <p class="hero-subtitle">
+                Join the global movement to preserve coastal ecosystems through blockchain technology.
+                Every conservation action you take is permanently recorded and rewarded with unique soulbound tokens.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#dashboard" class="btn btn-primary">
+                    🚀 Start Your Journey
+                </a>
+                <a href="#marine-areas" class="btn btn-secondary">
+                    🌿 Explore Areas
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="stat-number">12,847</span>
+                    <span class="stat-label">Active Guardians</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-number">2.4M</span>
+                    <span class="stat-label">Hectares Protected</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-number">89,432</span>
+                    <span class="stat-label">Conservation Actions</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-number">156K</span>
+                    <span class="stat-label">Tokens Earned</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marine Protected Areas -->
+    <section id="marine-areas" class="marine-areas">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">🌿 Conservation Zones</div>
+                <h2 class="section-title">Marine Protected Areas</h2>
+                <p class="section-subtitle">
+                    Discover the critical coastal ecosystems we're protecting through community action and blockchain
+                    verification.
+                    Each area represents a unique opportunity to contribute to marine conservation.
+                </p>
+            </div>
+
+            <div class="areas-grid">
+                <div class="area-card fade-in">
+                    <div class="area-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                        <div class="area-badge">Marine Sanctuary</div>
+                    </div>
+                    <div class="area-content">
+                        <h3 class="area-title">Hundred Islands National Park</h3>
+                        <p class="area-description">
+                            A pristine archipelago of 124 limestone islands supporting diverse marine ecosystems, coral
+                            reefs, and endemic species.
+                        </p>
+                        <div class="area-stats">
+                            <div class="area-stat">
+                                <div class="area-stat-value">96%</div>
+                                <div class="area-stat-label">Health Score</div>
+                            </div>
+                            <div class="area-stat">
+                                <div class="area-stat-value">387</div>
+                                <div class="area-stat-label">Species</div>
+                            </div>
+                            <div class="area-stat">
+                                <div class="area-stat-value">2.1K</div>
+                                <div class="area-stat-label">Hectares</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="area-card fade-in">
+                    <div class="area-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80');">
+                        <div class="area-badge">Research Station</div>
+                    </div>
+                    <div class="area-content">
+                        <h3 class="area-title">Bolinao Marine Laboratory</h3>
+                        <p class="area-description">
+                            Leading marine research facility protecting coral reefs, seagrass beds, and mangrove
+                            ecosystems through scientific innovation.
+                        </p>
+                        <div class="area-stats">
+                            <div class="area-stat">
+                                <div class="area-stat-value">89%</div>
+                                <div class="area-stat-label">Water Quality</div>
+                            </div>
+                            <div class="area-stat">
+                                <div class="area-stat-value">234</div>
+                                <div class="area-stat-label">Species</div>
+                            </div>
+                            <div class="area-stat">
+                                <div class="area-stat-value">1.8K</div>
+                                <div class="area-stat-label">Hectares</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="area-card fade-in">
+                    <div class="area-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                        <div class="area-badge">Mangrove Forest</div>
+                    </div>
+                    <div class="area-content">
+                        <h3 class="area-title">Alaminos Mangrove Reserve</h3>
+                        <p class="area-description">
+                            Extensive mangrove ecosystem providing coastal protection, carbon sequestration, and nursery
+                            habitat for marine species.
+                        </p>
+                        <div class="area-stats">
+                            <div class="area-stat">
+                                <div class="area-stat-value">94%</div>
+                                <div class="area-stat-label">Forest Cover</div>
+                            </div>
+                            <div class="area-stat">
+                                <div class="area-stat-value">178</div>
+                                <div class="area-stat-label">Species</div>
+                            </div>
+                            <div class="area-stat">
+                                <div class="area-stat-value">2.7K</div>
+                                <div class="area-stat-label">Hectares</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Token Dashboard -->
+    <section id="dashboard" class="token-dashboard">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">🏆 Your Impact</div>
+                <h2 class="section-title">Guardian Dashboard</h2>
+                <p class="section-subtitle">
+                    Track your conservation journey and soulbound token achievements. Every action contributes to marine
+                    protection and your Guardian status.
+                </p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="token-card slide-in-left">
+                    <div class="token-visual">🌊</div>
+                    <div class="token-level">
+                        <div class="level-title">Ocean Guardian</div>
+                        <div class="level-subtitle">Level 3 • Soulbound Token Holder</div>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label">Progress to Next Level</span>
+                            <span class="progress-value">750/1000 XP</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <div class="token-stats">
+                        <div class="token-stat">
+                            <div class="token-stat-value">1,247</div>
+                            <div class="token-stat-label">CGT Earned</div>
+                        </div>
+                        <div class="token-stat">
+                            <div class="token-stat-value">23</div>
+                            <div class="token-stat-label">Actions Completed</div>
+                        </div>
+                        <div class="token-stat">
+                            <div class="token-stat-value">156</div>
+                            <div class="token-stat-label">Trees Planted</div>
+                        </div>
+                        <div class="token-stat">
+                            <div class="token-stat-value">89</div>
+                            <div class="token-stat-label">Days Active</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements slide-in-right">
+                    <h3 class="achievements-title">Conservation Achievements</h3>
+                    <div class="achievement-grid">
+                        <div class="achievement earned">
+                            <div class="achievement-icon">🌱</div>
+                            <div class="achievement-name">First Planting</div>
+                        </div>
+                        <div class="achievement earned">
+                            <div class="achievement-icon">🏖️</div>
+                            <div class="achievement-name">Beach Cleaner</div>
+                        </div>
+                        <div class="achievement earned">
+                            <div class="achievement-icon">🐠</div>
+                            <div class="achievement-name">Marine Monitor</div>
+                        </div>
+                        <div class="achievement earned">
+                            <div class="achievement-icon">📊</div>
+                            <div class="achievement-name">Data Collector</div>
+                        </div>
+                        <div class="achievement">
+                            <div class="achievement-icon">🏆</div>
+                            <div class="achievement-name">Guardian Elite</div>
+                        </div>
+                        <div class="achievement">
+                            <div class="achievement-icon">🌊</div>
+                            <div class="achievement-name">Ocean Master</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Actions -->
+    <section id="actions" class="community-actions">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">🚀 Take Action</div>
+                <h2 class="section-title">Community Conservation</h2>
+                <p class="section-subtitle">
+                    Participate in verified conservation activities and earn soulbound tokens. Each action is recorded
+                    on the blockchain for transparency and impact tracking.
+                </p>
+            </div>
+
+            <div class="actions-grid">
+                <div class="action-card fade-in">
+                    <div class="action-icon">🌱</div>
+                    <h3 class="action-title">Mangrove Planting</h3>
+                    <p class="action-description">
+                        Join community mangrove restoration projects. Plant native species and help rebuild coastal
+                        barriers against climate change.
+                    </p>
+                    <div class="action-reward">+50 CGT per tree planted</div>
+                    <button class="action-btn" onclick="window.location.href='coastal_cleanup.html'">Join Event</button>
+                </div>
+
+                <div class="action-card fade-in">
+                    <div class="action-icon">🏖️</div>
+                    <h3 class="action-title">Beach Cleanup</h3>
+                    <p class="action-description">
+                        Organize or participate in beach cleanup events. Remove plastic waste and protect marine life
+                        from pollution.
+                    </p>
+                    <div class="action-reward">+25 CGT per kg collected</div>
+                    <button class="action-btn" onclick="window.location.href='coastal_cleanup.html'">Join Event</button>
+                </div>
+
+                <div class="action-card fade-in">
+                    <div class="action-icon">🔬</div>
+                    <h3 class="action-title">Water Quality Monitoring</h3>
+                    <p class="action-description">
+                        Contribute to citizen science by monitoring water quality parameters and reporting ecosystem
+                        health data.
+                    </p>
+                    <div class="action-reward">+75 CGT per report</div>
+                    <button class="action-btn" onclick="window.location.href='coastal_cleanup.html'">Join Event</button>
+                </div>
+
+                <div class="action-card fade-in">
+                    <div class="action-icon">📸</div>
+                    <h3 class="action-title">Wildlife Documentation</h3>
+                    <p class="action-description">
+                        Document marine wildlife sightings and contribute to biodiversity databases for conservation
+                        research.
+                    </p>
+                    <div class="action-reward">+30 CGT per verified sighting</div>
+                    <button class="action-btn" onclick="window.location.href='picture.html'">Join Event</button>
+                </div>
+
+                <div class="action-card fade-in">
+                    <div class="action-icon">🎓</div>
+                    <h3 class="action-title">Education Outreach</h3>
+                    <p class="action-description">
+                        Lead educational workshops about marine conservation in schools and communities to raise
+                        awareness.
+                    </p>
+                    <div class="action-reward">+100 CGT per workshop</div>
+                    <button class="action-btn" onclick="window.location.href='coastal_cleanup.html'">Join Event</button>
+                </div>
+
+                <div class="action-card fade-in">
+                    <div class="action-icon">🚨</div>
+                    <h3 class="action-title">Threat Reporting</h3>
+                    <p class="action-description">
+                        Report environmental threats like illegal fishing, pollution, or habitat destruction to
+                        conservation authorities.
+                    </p>
+                    <div class="action-reward">+150 CGT per verified report</div>
+                    <button class="action-btn" onclick="window.location.href='reports.html'">Join Event</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coastal News -->
+    <section id="news" class="coastal-news">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">📰 Latest Updates</div>
+                <h2 class="section-title">Coastal Conservation News</h2>
+                <p class="section-subtitle">
+                    Stay informed about the latest developments in marine conservation, research breakthroughs, and
+                    community achievements.
+                </p>
+            </div>
+
+            <div class="news-grid">
+                <div class="news-card fade-in">
+                    <div class="news-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80');">
+                        <div class="news-date">Dec 15, 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Research</div>
+                        <h3 class="news-title">Breakthrough in Coral Restoration Technology</h3>
+                        <p class="news-excerpt">
+                            Scientists at Bolinao Marine Laboratory have developed a new technique that increases coral
+                            survival rates by 40% in restoration projects.
+                        </p>
+                        <div class="news-footer">
+                            <span class="news-author">Dr. Maria Santos</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card fade-in">
+                    <div class="news-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                        <div class="news-date">Dec 12, 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Community</div>
+                        <h3 class="news-title">Record-Breaking Mangrove Planting Event</h3>
+                        <p class="news-excerpt">
+                            Over 500 volunteers planted 10,000 mangrove seedlings in a single day, setting a new record
+                            for community conservation action.
+                        </p>
+                        <div class="news-footer">
+                            <span class="news-author">Community Team</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card fade-in">
+                    <div class="news-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                        <div class="news-date">Dec 10, 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Technology</div>
+                        <h3 class="news-title">New Blockchain Platform Launches for Ocean Conservation</h3>
+                        <p class="news-excerpt">
+                            Coastal Guardian platform officially launches, enabling transparent tracking of conservation
+                            efforts through soulbound tokens and Web3 technology.
+                        </p>
+                        <div class="news-footer">
+                            <span class="news-author">Tech Team</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card fade-in">
+                    <div class="news-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                        <div class="news-date">Dec 8, 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Conservation</div>
+                        <h3 class="news-title">Marine Protected Area Expansion Approved</h3>
+                        <p class="news-excerpt">
+                            Government approves expansion of Hundred Islands National Park, adding 500 hectares of
+                            critical marine habitat to protected status.
+                        </p>
+                        <div class="news-footer">
+                            <span class="news-author">Policy Team</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card fade-in">
+                    <div class="news-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2073&q=80');">
+                        <div class="news-date">Dec 5, 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Research</div>
+                        <h3 class="news-title">Seagrass Restoration Shows Promising Results</h3>
+                        <p class="news-excerpt">
+                            Three-year seagrass restoration project at Bani Sanctuary shows 85% survival rate and
+                            increased marine biodiversity.
+                        </p>
+                        <div class="news-footer">
+                            <span class="news-author">Research Team</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card fade-in">
+                    <div class="news-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                        <div class="news-date">Dec 3, 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Community</div>
+                        <h3 class="news-title">Youth Conservation Program Graduates First Class</h3>
+                        <p class="news-excerpt">
+                            50 young environmental leaders complete intensive marine conservation training program,
+                            ready to lead community initiatives.
+                        </p>
+                        <div class="news-footer">
+                            <span class="news-author">Education Team</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section id="leaderboard" class="leaderboard">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">🏆 Top Contributors</div>
+                <h2 class="section-title">Guardian Leaderboard</h2>
+                <p class="section-subtitle">
+                    Celebrating the most dedicated ocean guardians who are making a real difference in marine
+                    conservation through verified actions.
+                </p>
+            </div>
+
+            <div class="leaderboard-container">
+                <div class="leaderboard-header">
+                    <h3 class="leaderboard-title">Top Ocean Guardians</h3>
+                    <p class="leaderboard-subtitle">Ranked by conservation impact and community contributions</p>
+                </div>
+
+                <div class="guardian-list">
+                    <div class="guardian-item top-3 fade-in">
+                        <div class="guardian-rank">1</div>
+                        <div class="guardian-avatar">🌊</div>
+                        <div class="guardian-info">
+                            <div class="guardian-name">Marina Rodriguez</div>
+                            <div class="guardian-level">Ocean Master • Level 8</div>
+                        </div>
+                        <div class="guardian-stats">
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">4,892</div>
+                                <div class="guardian-stat-label">CGT Earned</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">156</div>
+                                <div class="guardian-stat-label">Actions</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">2,340</div>
+                                <div class="guardian-stat-label">Trees Planted</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guardian-item top-3 fade-in">
+                        <div class="guardian-rank">2</div>
+                        <div class="guardian-avatar">🐠</div>
+                        <div class="guardian-info">
+                            <div class="guardian-name">Carlos Mendoza</div>
+                            <div class="guardian-level">Reef Guardian • Level 7</div>
+                        </div>
+                        <div class="guardian-stats">
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">4,156</div>
+                                <div class="guardian-stat-label">CGT Earned</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">134</div>
+                                <div class="guardian-stat-label">Actions</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">1,890</div>
+                                <div class="guardian-stat-label">Trees Planted</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guardian-item top-3 fade-in">
+                        <div class="guardian-rank">3</div>
+                        <div class="guardian-avatar">🌱</div>
+                        <div class="guardian-info">
+                            <div class="guardian-name">Sarah Chen</div>
+                            <div class="guardian-level">Mangrove Guardian • Level 6</div>
+                        </div>
+                        <div class="guardian-stats">
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">3,742</div>
+                                <div class="guardian-stat-label">CGT Earned</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">118</div>
+                                <div class="guardian-stat-label">Actions</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">1,567</div>
+                                <div class="guardian-stat-label">Trees Planted</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guardian-item fade-in">
+                        <div class="guardian-rank">4</div>
+                        <div class="guardian-avatar">🏖️</div>
+                        <div class="guardian-info">
+                            <div class="guardian-name">Ahmed Hassan</div>
+                            <div class="guardian-level">Beach Guardian • Level 5</div>
+                        </div>
+                        <div class="guardian-stats">
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">2,934</div>
+                                <div class="guardian-stat-label">CGT Earned</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">97</div>
+                                <div class="guardian-stat-label">Actions</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">1,234</div>
+                                <div class="guardian-stat-label">Trees Planted</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guardian-item fade-in">
+                        <div class="guardian-rank">5</div>
+                        <div class="guardian-avatar">🔬</div>
+                        <div class="guardian-info">
+                            <div class="guardian-name">Dr. Lisa Park</div>
+                            <div class="guardian-level">Research Guardian • Level 5</div>
+                        </div>
+                        <div class="guardian-stats">
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">2,678</div>
+                                <div class="guardian-stat-label">CGT Earned</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">89</div>
+                                <div class="guardian-stat-label">Actions</div>
+                            </div>
+                            <div class="guardian-stat">
+                                <div class="guardian-stat-value">1,045</div>
+                                <div class="guardian-stat-label">Trees Planted</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/FAQ -->
+    <section id="about" class="about-faq">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">ℹ️ Learn More</div>
+                <h2 class="section-title">About Coastal Guardian</h2>
+                <p class="section-subtitle">
+                    Discover our mission, meet our team, and get answers to common questions about our Web3 marine
+                    conservation platform.
+                </p>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-content slide-in-left">
+                    <h3 class="about-title">Our Mission</h3>
+                    <p class="about-text">
+                        Coastal Guardian is revolutionizing marine conservation through blockchain technology and
+                        community engagement.
+                        We believe that every conservation action, no matter how small, contributes to the health of our
+                        oceans.
+                    </p>
+                    <p class="about-text">
+                        Our platform uses soulbound tokens to create permanent, verifiable records of conservation
+                        efforts,
+                        ensuring transparency and accountability while rewarding those who dedicate their time to
+                        protecting marine ecosystems.
+                    </p>
+                    <p class="about-text">
+                        By combining cutting-edge Web3 technology with proven conservation science, we're building a
+                        global
+                        community of ocean guardians committed to preserving marine biodiversity for future generations.
+                    </p>
+
+                    <h4 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-ocean); font-weight: 600;">
+                        Our Team</h4>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="team-avatar">👨‍💻</div>
+                            <div class="team-name">Robe Kyle P. Salangad</div>
+                            <div class="team-role">Ux Designer</div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">👨‍💻</div>
+                            <div class="team-name">Christopher Clark de Guzman</div>
+                            <div class="team-role">UI Designer</div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">👨</div>
+                            <div class="team-name">Robi S. Lloren</div>
+                            <div class="team-role">Mentor</div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">👨</div>
+                            <div class="team-name">Regine Anyag</div>
+                            <div class="team-role">UI Designer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-content slide-in-right">
+                    <h3 class="faq-title">Frequently Asked Questions</h3>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What are soulbound tokens?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Soulbound tokens (SBTs) are non-transferable digital certificates that permanently record
+                            your conservation achievements.
+                            Unlike regular NFTs, they cannot be sold or transferred, making them perfect for
+                            representing personal accomplishments and contributions.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How do I earn CGT tokens?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            You earn Coastal Guardian Tokens (CGT) by participating in verified conservation activities
+                            such as mangrove planting,
+                            beach cleanups, water quality monitoring, and educational outreach. Each action is verified
+                            and recorded on the blockchain.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Is the platform free to use?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes! Coastal Guardian is completely free to use. We believe conservation should be
+                            accessible to everyone.
+                            You only need a Web3 wallet to connect and start earning tokens for your conservation
+                            efforts.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How are conservation actions verified?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            We use a combination of GPS tracking, photo verification, community validation, and
+                            partnerships with local
+                            conservation organizations to ensure all reported actions are legitimate and impactful.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Can I participate without crypto knowledge?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Our platform is designed to be user-friendly for everyone. We provide step-by-step guides
+                            for setting up
+                            a wallet and participating in conservation activities, regardless of your Web3 experience.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What impact does my participation have?
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            Every action contributes to real conservation outcomes. Your participation helps restore
+                            marine habitats,
+                            protect endangered species, improve water quality, and build resilient coastal communities
+                            while creating
+                            a permanent record of positive environmental impact.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="footer-logo-icon">🌊</div>
+                <div class="footer-logo-text">Coastal Guardian</div>
+            </div>
+
+            <p class="footer-description">
+                Protecting marine ecosystems through Web3 technology and community action.
+                Join the global movement to preserve our oceans for future generations.
+            </p>
+
+            <div class="footer-links">
+                <a href="#marine-areas">Protected Areas</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#actions">Take Action</a>
+                <a href="#news">News</a>
+                <a href="#leaderboard">Leaderboard</a>
+                <a href="#about">About</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 Coastal Guardian. Building a sustainable future through blockchain conservation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../scripts/dashboard.js"></script>
+
+</body>
+
+</html>

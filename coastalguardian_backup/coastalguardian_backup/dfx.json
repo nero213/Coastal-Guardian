@@ -1,0 +1,25 @@
+{
+  "canisters": {
+    "my_raw_backend": {
+      "type": "motoko",
+      "main": "src/my_raw_backend/main.mo"
+    },
+    "my_raw_frontend": {
+      "type": "assets",
+      "source": [
+        "src/my_raw_frontend",  
+        "src/declarations"
+      ],
+      "build": [], 
+      "declarations": {
+        "output": ""
+      }
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": ""
+    }
+  },
+  "version": 1
+}

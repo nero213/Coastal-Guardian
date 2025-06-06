@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guardian Admin Panel</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="logo">
+                    <i class="fas fa-water"></i>
+                    <span>Coastal Guardian</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="search-container">
+                    <input type="text" placeholder="Search..." class="search-input">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="admin-profile">
+                    <div class="admin-avatar">
+                        <img src="../Assets/chuks.jpg" alt="Admin">
+                    </div>
+                    <div class="admin-info">
+                        <span class="admin-name">Admin User</span>
+                        <span class="admin-role">Super Admin</span>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span>Main Navigation</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-section="submissions">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Pending Submissions</span>
+                    <span class="badge">15</span>
+                </li>
+                <li class="nav-item" data-section="events">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Event Management</span>
+                </li>
+                <li class="nav-item" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                </li>
+                <li class="nav-item" data-section="tokens">
+                    <i class="fas fa-coins"></i>
+                    <span>CGT Distribution</span>
+                </li>
+                <li class="nav-item" data-section="analytics">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </li>
+                <li class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="platform-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total CGT</span>
+                        <span class="stat-value">45,680</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Guardians</span>
+                        <span class="stat-value">1,247</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>Dashboard</h1>
+                        <p>Platform overview and key metrics</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="date-filter">
+                            <button class="date-btn active">Today</button>
+                            <button class="date-btn">Week</button>
+                            <button class="date-btn">Month</button>
+                            <button class="date-btn">Year</button>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            <span>Export Report</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-header">
+                                <h3>1,247</h3>
+                                <span class="stat-change positive">+12%</span>
+                            </div>
+                            <p>Active Guardians</p>
+                            <div class="stat-chart">
+                                <div class="chart-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-header">
+                                <h3>45,680</h3>
+                                <span class="stat-change positive">+8%</span>
+                            </div>
+                            <p>CGT Distributed</p>
+                            <div class="stat-chart">
+                                <div class="chart-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-header">
+                                <h3>15</h3>
+                                <span class="stat-change neutral">Pending</span>
+                            </div>
+                            <p>Submissions to Review</p>
+                            <div class="stat-chart">
+                                <div class="chart-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-header">
+                                <h3>2,340</h3>
+                                <span class="stat-change positive">+15%</span>
+                            </div>
+                            <p>Trees Planted</p>
+                            <div class="stat-chart">
+                                <div class="chart-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card activity-feed">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <button class="btn-icon">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">🌱</div>
+                                <div class="activity-content">
+                                    <div class="activity-user">
+                                        <img src="../" alt="User" class="user-avatar-sm">
+                                        <p><strong>Sarah Chen</strong> planted 5 mangroves</p>
+                                    </div>
+                                    <div class="activity-meta">
+                                        <span class="activity-time">2 hours ago</span>
+                                        <span class="activity-reward">+250 CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">🏖️</div>
+                                <div class="activity-content">
+                                    <div class="activity-user">
+                                        <img src="/placeholder.svg?height=30&width=30" alt="User" class="user-avatar-sm">
+                                        <p><strong>Mike Rodriguez</strong> completed beach cleanup</p>
+                                    </div>
+                                    <div class="activity-meta">
+                                        <span class="activity-time">4 hours ago</span>
+                                        <span class="activity-reward">+75 CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">🔬</div>
+                                <div class="activity-content">
+                                    <div class="activity-user">
+                                        <img src="/placeholder.svg?height=30&width=30" alt="User" class="user-avatar-sm">
+                                        <p><strong>Dr. Emma Wilson</strong> submitted water quality report</p>
+                                    </div>
+                                    <div class="activity-meta">
+                                        <span class="activity-time">6 hours ago</span>
+                                        <span class="activity-reward">+75 CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">📸</div>
+                                <div class="activity-content">
+                                    <div class="activity-user">
+                                        <img src="/placeholder.svg?height=30&width=30" alt="User" class="user-avatar-sm">
+                                        <p><strong>James Lee</strong> documented rare sea turtle</p>
+                                    </div>
+                                    <div class="activity-meta">
+                                        <span class="activity-time">8 hours ago</span>
+                                        <span class="activity-reward">+30 CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">🎓</div>
+                                <div class="activity-content">
+                                    <div class="activity-user">
+                                        <img src="/placeholder.svg?height=30&width=30" alt="User" class="user-avatar-sm">
+                                        <p><strong>Aisha Patel</strong> conducted education workshop</p>
+                                    </div>
+                                    <div class="activity-meta">
+                                        <span class="activity-time">Yesterday</span>
+                                        <span class="activity-reward">+100 CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-text">View All Activity</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card distribution-chart">
+                        <div class="card-header">
+                            <h3>CGT Distribution by Activity</h3>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: var(--primary-ocean);"></span>
+                                    <span>This Month</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: var(--sea-foam);"></span>
+                                    <span>Last Month</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-bars">
+                                <div class="chart-group">
+                                    <div class="chart-label">🌱</div>
+                                    <div class="chart-bar-container">
+                                        <div class="chart-bar" style="height: 85%"></div>
+                                        <div class="chart-bar secondary" style="height: 70%"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-group">
+                                    <div class="chart-label">🏖️</div>
+                                    <div class="chart-bar-container">
+                                        <div class="chart-bar" style="height: 65%"></div>
+                                        <div class="chart-bar secondary" style="height: 55%"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-group">
+                                    <div class="chart-label">🔬</div>
+                                    <div class="chart-bar-container">
+                                        <div class="chart-bar" style="height: 45%"></div>
+                                        <div class="chart-bar secondary" style="height: 40%"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-group">
+                                    <div class="chart-label">📸</div>
+                                    <div class="chart-bar-container">
+                                        <div class="chart-bar" style="height: 35%"></div>
+                                        <div class="chart-bar secondary" style="height: 30%"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-group">
+                                    <div class="chart-label">🎓</div>
+                                    <div class="chart-bar-container">
+                                        <div class="chart-bar" style="height: 25%"></div>
+                                        <div class="chart-bar secondary" style="height: 20%"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-group">
+                                    <div class="chart-label">🚨</div>
+                                    <div class="chart-bar-container">
+                                        <div class="chart-bar" style="height: 15%"></div>
+                                        <div class="chart-bar secondary" style="height: 10%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-grid">
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                                <div class="chart-grid-line"></div>
+                            </div>
+                        </div>
+                        <div class="chart-values">
+                            <span>0</span>
+                            <span>5k</span>
+                            <span>10k</span>
+                            <span>15k</span>
+                            <span>20k</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="dashboard-card map-card">
+                        <div class="card-header">
+                            <h3>Activity Map</h3>
+                            <div class="map-filters">
+                                <button class="map-filter active">All</button>
+                                <button class="map-filter">Mangrove</button>
+                                <button class="map-filter">Cleanup</button>
+                                <button class="map-filter">Water</button>
+                            </div>
+                        </div>
+                        <div class="map-container">
+                            <div class="map-placeholder">
+                                <img src="/placeholder.svg?height=300&width=100%" alt="Activity Map">
+                                <div class="map-marker" style="top: 30%; left: 20%;" data-type="mangrove">🌱</div>
+                                <div class="map-marker" style="top: 50%; left: 40%;" data-type="cleanup">🏖️</div>
+                                <div class="map-marker" style="top: 40%; left: 60%;" data-type="water">🔬</div>
+                                <div class="map-marker" style="top: 60%; left: 70%;" data-type="wildlife">📸</div>
+                                <div class="map-marker" style="top: 70%; left: 30%;" data-type="education">🎓</div>
+                                <div class="map-marker" style="top: 20%; left: 80%;" data-type="threat">🚨</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submissions Section -->
+            <section id="submissions" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>Pending Submissions</h1>
+                        <p>Review and approve user activities</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="filter-container">
+                            <select class="filter-select">
+                                <option>All Activities</option>
+                                <option>Mangrove Planting</option>
+                                <option>Beach Cleanup</option>
+                                <option>Water Quality</option>
+                                <option>Wildlife Documentation</option>
+                                <option>Education Outreach</option>
+                                <option>Threat Reporting</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>All Status</option>
+                                <option>Pending</option>
+                                <option>Approved</option>
+                                <option>Rejected</option>
+                            </select>
+                        </div>
+                        <div class="search-submissions">
+                            <input type="text" placeholder="Search submissions..." class="search-input">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submissions-container">
+                    <!-- Submission 1 -->
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="submission-type">
+                                <span class="event-emoji">🌱</span>
+                                <div>
+                                    <h3>Mangrove Planting</h3>
+                                    <p>Submitted by <strong>Alex Thompson</strong> • 2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="submission-status pending">Pending Review</div>
+                        </div>
+                        <div class="submission-content">
+                            <div class="submission-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Location</span>
+                                        <span class="detail-value">Mangrove Bay Conservation Area</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Trees Planted</span>
+                                        <span class="detail-value">5 mangroves</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Date</span>
+                                        <span class="detail-value">March 15, 2024</span>
+                                    </div>
+                                </div>
+                                <div class="detail-description">
+                                    <span class="detail-label">Description</span>
+                                    <p>Planted 5 red mangrove seedlings in the designated restoration zone. All trees were properly spaced and secured with biodegradable stakes. Followed the planting protocol provided by the conservation team.</p>
+                                </div>
+                            </div>
+                            <div class="submission-evidence">
+                                <h4>Evidence</h4>
+                                <div class="evidence-grid">
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Planting evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Planting evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Planting evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-reward">
+                            <div class="reward-calculation">
+                                <span class="reward-formula">5 trees × 50 CGT</span>
+                                <span class="reward-total">+250 CGT</span>
+                            </div>
+                        </div>
+                        <div class="submission-actions">
+                            <button class="btn btn-outline" onclick="showRejectModal(1)">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                            <button class="btn btn-success" onclick="approveSubmission(1)">
+                                <i class="fas fa-check"></i> Approve & Reward
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submission 2 -->
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="submission-type">
+                                <span class="event-emoji">🏖️</span>
+                                <div>
+                                    <h3>Beach Cleanup</h3>
+                                    <p>Submitted by <strong>Maria Santos</strong> • 4 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="submission-status pending">Pending Review</div>
+                        </div>
+                        <div class="submission-content">
+                            <div class="submission-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Location</span>
+                                        <span class="detail-value">Sunset Beach</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Waste Collected</span>
+                                        <span class="detail-value">3 kg</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Date</span>
+                                        <span class="detail-value">March 14, 2024</span>
+                                    </div>
+                                </div>
+                                <div class="detail-description">
+                                    <span class="detail-label">Description</span>
+                                    <p>Collected plastic bottles, food wrappers, and cigarette butts along 500m of coastline. Waste was properly sorted for recycling and disposal. Focused on microplastics in the high tide line area.</p>
+                                </div>
+                            </div>
+                            <div class="submission-evidence">
+                                <h4>Evidence</h4>
+                                <div class="evidence-grid">
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Cleanup evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Cleanup evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-reward">
+                            <div class="reward-calculation">
+                                <span class="reward-formula">3 kg × 25 CGT</span>
+                                <span class="reward-total">+75 CGT</span>
+                            </div>
+                        </div>
+                        <div class="submission-actions">
+                            <button class="btn btn-outline" onclick="showRejectModal(2)">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                            <button class="btn btn-success" onclick="approveSubmission(2)">
+                                <i class="fas fa-check"></i> Approve & Reward
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submission 3 -->
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="submission-type">
+                                <span class="event-emoji">🔬</span>
+                                <div>
+                                    <h3>Water Quality Monitoring</h3>
+                                    <p>Submitted by <strong>Dr. Emma Wilson</strong> • 6 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="submission-status pending">Pending Review</div>
+                        </div>
+                        <div class="submission-content">
+                            <div class="submission-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Location</span>
+                                        <span class="detail-value">Coral Bay Reef</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Parameters</span>
+                                        <span class="detail-value">pH, DO, Turbidity, Temp</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Date</span>
+                                        <span class="detail-value">March 13, 2024</span>
+                                    </div>
+                                </div>
+                                <div class="detail-description">
+                                    <span class="detail-label">Description</span>
+                                    <p>Conducted comprehensive water quality testing at three points around Coral Bay Reef. Results show normal pH levels (8.1-8.3), dissolved oxygen at 6.8 mg/L, and turbidity within acceptable ranges. Temperature was 26.5°C, which is slightly elevated but not concerning.</p>
+                                </div>
+                            </div>
+                            <div class="submission-evidence">
+                                <h4>Evidence</h4>
+                                <div class="evidence-grid">
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Water testing evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Water testing evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item document">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>Water_Report.pdf</span>
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-download"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-reward">
+                            <div class="reward-calculation">
+                                <span class="reward-formula">1 report × 75 CGT</span>
+                                <span class="reward-total">+75 CGT</span>
+                            </div>
+                        </div>
+                        <div class="submission-actions">
+                            <button class="btn btn-outline" onclick="showRejectModal(3)">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                            <button class="btn btn-success" onclick="approveSubmission(3)">
+                                <i class="fas fa-check"></i> Approve & Reward
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submission 4 -->
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="submission-type">
+                                <span class="event-emoji">📸</span>
+                                <div>
+                                    <h3>Wildlife Documentation</h3>
+                                    <p>Submitted by <strong>James Lee</strong> • 8 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="submission-status pending">Pending Review</div>
+                        </div>
+                        <div class="submission-content">
+                            <div class="submission-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Location</span>
+                                        <span class="detail-value">Eastern Reef Point</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Species</span>
+                                        <span class="detail-value">Hawksbill Sea Turtle</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Date</span>
+                                        <span class="detail-value">March 12, 2024</span>
+                                    </div>
+                                </div>
+                                <div class="detail-description">
+                                    <span class="detail-label">Description</span>
+                                    <p>Documented a juvenile Hawksbill sea turtle (Eretmochelys imbricata) feeding on sponges near the reef edge. The turtle appeared healthy with no visible injuries or fishing line entanglement. Observed for approximately 15 minutes without disturbing the animal.</p>
+                                </div>
+                            </div>
+                            <div class="submission-evidence">
+                                <h4>Evidence</h4>
+                                <div class="evidence-grid">
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Wildlife evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Wildlife evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Wildlife evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-reward">
+                            <div class="reward-calculation">
+                                <span class="reward-formula">1 sighting × 30 CGT</span>
+                                <span class="reward-total">+30 CGT</span>
+                            </div>
+                        </div>
+                        <div class="submission-actions">
+                            <button class="btn btn-outline" onclick="showRejectModal(4)">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                            <button class="btn btn-success" onclick="approveSubmission(4)">
+                                <i class="fas fa-check"></i> Approve & Reward
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submission 5 -->
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="submission-type">
+                                <span class="event-emoji">🚨</span>
+                                <div>
+                                    <h3>Threat Reporting</h3>
+                                    <p>Submitted by <strong>Raj Patel</strong> • Yesterday</p>
+                                </div>
+                            </div>
+                            <div class="submission-status pending">Pending Review</div>
+                        </div>
+                        <div class="submission-content">
+                            <div class="submission-details">
+                                <div class="detail-row">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Location</span>
+                                        <span class="detail-value">North Bay Marina</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Threat Type</span>
+                                        <span class="detail-value">Oil Spill</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Date</span>
+                                        <span class="detail-value">March 11, 2024</span>
+                                    </div>
+                                </div>
+                                <div class="detail-description">
+                                    <span class="detail-label">Description</span>
+                                    <p>Observed a small oil spill near the marina fueling station. The spill appears to be approximately 2-3 meters in diameter with rainbow sheen visible on the water surface. Notified marina staff who began containment procedures. Local authorities have been contacted.</p>
+                                </div>
+                            </div>
+                            <div class="submission-evidence">
+                                <h4>Evidence</h4>
+                                <div class="evidence-grid">
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Threat evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <img src="/placeholder.svg?height=120&width=120" alt="Threat evidence" class="evidence-image">
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-expand"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="evidence-item">
+                                        <video controls class="evidence-video">
+                                            <source src="#" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="evidence-overlay">
+                                            <button class="btn-icon"><i class="fas fa-play"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-reward">
+                            <div class="reward-calculation">
+                                <span class="reward-formula">1 report × 150 CGT</span>
+                                <span class="reward-total">+150 CGT</span>
+                            </div>
+                        </div>
+                        <div class="submission-actions">
+                            <button class="btn btn-outline" onclick="showRejectModal(5)">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                            <button class="btn btn-success" onclick="approveSubmission(5)">
+                                <i class="fas fa-check"></i> Approve & Reward
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>Event Management</h1>
+                        <p>Configure event types and reward values</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="showCreateEventModal()">
+                            <i class="fas fa-plus"></i>
+                            <span>Create New Event</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="events-grid">
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-emoji">🌱</span>
+                            <div class="event-title">
+                                <h3>Mangrove Planting</h3>
+                                <div class="event-status active">Active</div>
+                            </div>
+                            <div class="event-menu">
+                                <button class="btn-icon" onclick="toggleEventMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="event-dropdown">
+                                    <a href="#" onclick="editEvent('mangrove')"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="#" onclick="toggleEventStatus('mangrove')"><i class="fas fa-pause"></i> Pause</a>
+                                    <a href="#" onclick="duplicateEvent('mangrove')"><i class="fas fa-copy"></i> Duplicate</a>
+                                    <a href="#" class="text-danger" onclick="deleteEvent('mangrove')"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-body">
+                            <p class="event-description">Plant mangrove seedlings in designated conservation areas to restore coastal ecosystems and provide habitat for marine life.</p>
+                            <div class="event-stats">
+                                <div class="event-stat">
+                                    <span class="stat-label">Submissions</span>
+                                    <span class="stat-value">342</span>
+                                </div>
+                                <div class="event-stat">
+                                    <span class="stat-label">CGT Awarded</span>
+                                    <span class="stat-value">15,988</span>
+                                </div>
+                            </div>
+                            <div class="event-reward-config">
+                                <div class="reward-setting">
+                                    <label>Reward per tree:</label>
+                                    <div class="reward-input-group">
+                                        <input type="number" value="50" class="reward-input">
+                                        <span>CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <button class="btn btn-sm btn-outline" onclick="viewEventDetails('mangrove')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editEvent('mangrove')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-emoji">🏖️</span>
+                            <div class="event-title">
+                                <h3>Beach Cleanup</h3>
+                                <div class="event-status active">Active</div>
+                            </div>
+                            <div class="event-menu">
+                                <button class="btn-icon" onclick="toggleEventMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="event-dropdown">
+                                    <a href="#" onclick="editEvent('cleanup')"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="#" onclick="toggleEventStatus('cleanup')"><i class="fas fa-pause"></i> Pause</a>
+                                    <a href="#" onclick="duplicateEvent('cleanup')"><i class="fas fa-copy"></i> Duplicate</a>
+                                    <a href="#" class="text-danger" onclick="deleteEvent('cleanup')"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-body">
+                            <p class="event-description">Remove waste and debris from coastal areas to prevent marine pollution and protect wildlife from harmful materials.</p>
+                            <div class="event-stats">
+                                <div class="event-stat">
+                                    <span class="stat-label">Submissions</span>
+                                    <span class="stat-value">289</span>
+                                </div>
+                                <div class="event-stat">
+                                    <span class="stat-label">CGT Awarded</span>
+                                    <span class="stat-value">11,420</span>
+                                </div>
+                            </div>
+                            <div class="event-reward-config">
+                                <div class="reward-setting">
+                                    <label>Reward per kg:</label>
+                                    <div class="reward-input-group">
+                                        <input type="number" value="25" class="reward-input">
+                                        <span>CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <button class="btn btn-sm btn-outline" onclick="viewEventDetails('cleanup')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editEvent('cleanup')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-emoji">🔬</span>
+                            <div class="event-title">
+                                <h3>Water Quality Monitoring</h3>
+                                <div class="event-status active">Active</div>
+                            </div>
+                            <div class="event-menu">
+                                <button class="btn-icon" onclick="toggleEventMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="event-dropdown">
+                                    <a href="#" onclick="editEvent('water')"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="#" onclick="toggleEventStatus('water')"><i class="fas fa-pause"></i> Pause</a>
+                                    <a href="#" onclick="duplicateEvent('water')"><i class="fas fa-copy"></i> Duplicate</a>
+                                    <a href="#" class="text-danger" onclick="deleteEvent('water')"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-body">
+                            <p class="event-description">Test and report on water quality parameters to monitor ecosystem health and identify pollution sources.</p>
+                            <div class="event-stats">
+                                <div class="event-stat">
+                                    <span class="stat-label">Submissions</span>
+                                    <span class="stat-value">156</span>
+                                </div>
+                                <div class="event-stat">
+                                    <span class="stat-label">CGT Awarded</span>
+                                    <span class="stat-value">9,136</span>
+                                </div>
+                            </div>
+                            <div class="event-reward-config">
+                                <div class="reward-setting">
+                                    <label>Reward per report:</label>
+                                    <div class="reward-input-group">
+                                        <input type="number" value="75" class="reward-input">
+                                        <span>CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <button class="btn btn-sm btn-outline" onclick="viewEventDetails('water')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editEvent('water')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-emoji">📸</span>
+                            <div class="event-title">
+                                <h3>Wildlife Documentation</h3>
+                                <div class="event-status active">Active</div>
+                            </div>
+                            <div class="event-menu">
+                                <button class="btn-icon" onclick="toggleEventMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="event-dropdown">
+                                    <a href="#" onclick="editEvent('wildlife')"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="#" onclick="toggleEventStatus('wildlife')"><i class="fas fa-pause"></i> Pause</a>
+                                    <a href="#" onclick="duplicateEvent('wildlife')"><i class="fas fa-copy"></i> Duplicate</a>
+                                    <a href="#" class="text-danger" onclick="deleteEvent('wildlife')"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-body">
+                            <p class="event-description">Document and report wildlife sightings to track biodiversity and monitor population changes over time.</p>
+                            <div class="event-stats">
+                                <div class="event-stat">
+                                    <span class="stat-label">Submissions</span>
+                                    <span class="stat-value">203</span>
+                                </div>
+                                <div class="event-stat">
+                                    <span class="stat-label">CGT Awarded</span>
+                                    <span class="stat-value">6,090</span>
+                                </div>
+                            </div>
+                            <div class="event-reward-config">
+                                <div class="reward-setting">
+                                    <label>Reward per sighting:</label>
+                                    <div class="reward-input-group">
+                                        <input type="number" value="30" class="reward-input">
+                                        <span>CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <button class="btn btn-sm btn-outline" onclick="viewEventDetails('wildlife')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editEvent('wildlife')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-emoji">🎓</span>
+                            <div class="event-title">
+                                <h3>Education Outreach</h3>
+                                <div class="event-status active">Active</div>
+                            </div>
+                            <div class="event-menu">
+                                <button class="btn-icon" onclick="toggleEventMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="event-dropdown">
+                                    <a href="#" onclick="editEvent('education')"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="#" onclick="toggleEventStatus('education')"><i class="fas fa-pause"></i> Pause</a>
+                                    <a href="#" onclick="duplicateEvent('education')"><i class="fas fa-copy"></i> Duplicate</a>
+                                    <a href="#" class="text-danger" onclick="deleteEvent('education')"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-body">
+                            <p class="event-description">Conduct educational workshops and presentations to raise awareness about coastal conservation and sustainable practices.</p>
+                            <div class="event-stats">
+                                <div class="event-stat">
+                                    <span class="stat-label">Submissions</span>
+                                    <span class="stat-value">98</span>
+                                </div>
+                                <div class="event-stat">
+                                    <span class="stat-label">CGT Awarded</span>
+                                    <span class="stat-value">3,654</span>
+                                </div>
+                            </div>
+                            <div class="event-reward-config">
+                                <div class="reward-setting">
+                                    <label>Reward per workshop:</label>
+                                    <div class="reward-input-group">
+                                        <input type="number" value="100" class="reward-input">
+                                        <span>CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <button class="btn btn-sm btn-outline" onclick="viewEventDetails('education')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editEvent('education')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-emoji">🚨</span>
+                            <div class="event-title">
+                                <h3>Threat Reporting</h3>
+                                <div class="event-status active">Active</div>
+                            </div>
+                            <div class="event-menu">
+                                <button class="btn-icon" onclick="toggleEventMenu(this)">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="event-dropdown">
+                                    <a href="#" onclick="editEvent('threat')"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="#" onclick="toggleEventStatus('threat')"><i class="fas fa-pause"></i> Pause</a>
+                                    <a href="#" onclick="duplicateEvent('threat')"><i class="fas fa-copy"></i> Duplicate</a>
+                                    <a href="#" class="text-danger" onclick="deleteEvent('threat')"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-body">
+                            <p class="event-description">Report environmental threats and violations to enable rapid response and protection of vulnerable ecosystems.</p>
+                            <div class="event-stats">
+                                <div class="event-stat">
+                                    <span class="stat-label">Submissions</span>
+                                    <span class="stat-value">42</span>
+                                </div>
+                                <div class="event-stat">
+                                    <span class="stat-label">CGT Awarded</span>
+                                    <span class="stat-value">5,482</span>
+                                </div>
+                            </div>
+                            <div class="event-reward-config">
+                                <div class="reward-setting">
+                                    <label>Reward per report:</label>
+                                    <div class="reward-input-group">
+                                        <input type="number" value="150" class="reward-input">
+                                        <span>CGT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-footer">
+                            <button class="btn btn-sm btn-outline" onclick="viewEventDetails('threat')">
+                                <i class="fas fa-chart-bar"></i> View Analytics
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="editEvent('threat')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>User Management</h1>
+                        <p>Monitor and manage coastal guardians</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="search-container">
+                            <input type="text" placeholder="Search users..." class="search-input">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="filter-container">
+                            <select class="filter-select">
+                                <option>All Status</option>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                                <option>Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Guardian</th>
+                                <th>Total CGT</th>
+                                <th>Activities</th>
+                                <th>Last Active</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img src="/placeholder.svg?height=40&width=40" alt="User">
+                                        </div>
+                                        <div>
+                                            <p class="user-name">Sarah Chen</p>
+                                            <p class="user-email">sarah@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><strong>1,250 CGT</strong></td>
+                                <td>23 activities</td>
+                                <td>2 hours ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" onclick="viewUser('sarah')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="editUser('sarah')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="showUserHistory('sarah')">
+                                            <i class="fas fa-history"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img src="/placeholder.svg?height=40&width=40" alt="User">
+                                        </div>
+                                        <div>
+                                            <p class="user-name">Mike Rodriguez</p>
+                                            <p class="user-email">mike@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><strong>890 CGT</strong></td>
+                                <td>18 activities</td>
+                                <td>1 day ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" onclick="viewUser('mike')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="editUser('mike')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="showUserHistory('mike')">
+                                            <i class="fas fa-history"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img src="/placeholder.svg?height=40&width=40" alt="User">
+                                        </div>
+                                        <div>
+                                            <p class="user-name">Dr. Emma Wilson</p>
+                                            <p class="user-email">emma@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><strong>2,100 CGT</strong></td>
+                                <td>31 activities</td>
+                                <td>3 hours ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" onclick="viewUser('emma')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="editUser('emma')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="showUserHistory('emma')">
+                                            <i class="fas fa-history"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img src="/placeholder.svg?height=40&width=40" alt="User">
+                                        </div>
+                                        <div>
+                                            <p class="user-name">James Lee</p>
+                                            <p class="user-email">james@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><strong>780 CGT</strong></td>
+                                <td>15 activities</td>
+                                <td>8 hours ago</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" onclick="viewUser('james')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="editUser('james')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="showUserHistory('james')">
+                                            <i class="fas fa-history"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">
+                                            <img src="/placeholder.svg?height=40&width=40" alt="User">
+                                        </div>
+                                        <div>
+                                            <p class="user-name">Aisha Patel</p>
+                                            <p class="user-email">aisha@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><strong>1,450 CGT</strong></td>
+                                <td>27 activities</td>
+                                <td>Yesterday</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" onclick="viewUser('aisha')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="editUser('aisha')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" onclick="showUserHistory('aisha')">
+                                            <i class="fas fa-history"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tokens Section -->
+            <section id="tokens" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>CGT Distribution</h1>
+                        <p>Track and manage token rewards</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            <span>Export Data</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="token-stats">
+                    <div class="token-card">
+                        <div class="token-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="token-info">
+                            <h3>45,680</h3>
+                            <p>Total CGT Distributed</p>
+                            <span class="token-trend">+22% this month</span>
+                        </div>
+                    </div>
+                    <div class="token-card">
+                        <div class="token-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="token-info">
+                            <h3>1,250</h3>
+                            <p>Pending Rewards</p>
+                            <span class="token-trend">15 submissions awaiting</span>
+                        </div>
+                    </div>
+                    <div class="token-card">
+                        <div class="token-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="token-info">
+                            <h3>8,940</h3>
+                            <p>This Month</p>
+                            <span class="token-trend">+18% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="distribution-analytics">
+                    <div class="distribution-chart">
+                        <h3>Distribution by Activity</h3>
+                        <div class="chart-container">
+                            <div class="chart-item">
+                                <div class="chart-label">
+                                    <span class="chart-emoji">🌱</span>
+                                    <span>Mangrove Planting</span>
+                                </div>
+                                <div class="chart-bar">
+                                    <div class="chart-fill" style="width: 35%"></div>
+                                </div>
+                                <div class="chart-value">15,988 CGT (35%)</div>
+                            </div>
+                            <div class="chart-item">
+                                <div class="chart-label">
+                                    <span class="chart-emoji">🏖️</span>
+                                    <span>Beach Cleanup</span>
+                                </div>
+                                <div class="chart-bar">
+                                    <div class="chart-fill" style="width: 25%"></div>
+                                </div>
+                                <div class="chart-value">11,420 CGT (25%)</div>
+                            </div>
+                            <div class="chart-item">
+                                <div class="chart-label">
+                                    <span class="chart-emoji">🔬</span>
+                                    <span>Water Quality</span>
+                                </div>
+                                <div class="chart-bar">
+                                    <div class="chart-fill" style="width: 20%"></div>
+                                </div>
+                                <div class="chart-value">9,136 CGT (20%)</div>
+                            </div>
+                            <div class="chart-item">
+                                <div class="chart-label">
+                                    <span class="chart-emoji">🚨</span>
+                                    <span>Threat Reporting</span>
+                                </div>
+                                <div class="chart-bar">
+                                    <div class="chart-fill" style="width: 12%"></div>
+                                </div>
+                                <div class="chart-value">5,482 CGT (12%)</div>
+                            </div>
+                            <div class="chart-item">
+                                <div class="chart-label">
+                                    <span class="chart-emoji">📸</span>
+                                    <span>Wildlife Documentation</span>
+                                </div>
+                                <div class="chart-bar">
+                                    <div class="chart-fill" style="width: 8%"></div>
+                                </div>
+                                <div class="chart-value">6,090 CGT (8%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>Analytics</h1>
+                        <p>Platform performance and insights</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="date-filter">
+                            <button class="date-btn active">7D</button>
+                            <button class="date-btn">30D</button>
+                            <button class="date-btn">90D</button>
+                            <button class="date-btn">1Y</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>User Growth</h3>
+                        <div class="metric-large">+127</div>
+                        <p>New guardians this month</p>
+                        <div class="trend positive">↗ 15% increase</div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Activity Rate</h3>
+                        <div class="metric-large">78%</div>
+                        <p>Users active in last 30 days</p>
+                        <div class="trend positive">↗ 8% increase</div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Approval Rate</h3>
+                        <div class="metric-large">94%</div>
+                        <p>Submissions approved</p>
+                        <div class="trend neutral">→ Stable</div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Environmental Impact</h3>
+                        <div class="metric-large">2,340</div>
+                        <p>Trees planted total</p>
+                        <div class="trend positive">↗ 23% increase</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h1>Settings</h1>
+                        <p>Platform configuration and preferences</p>
+                    </div>
+                </div>
+
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3>General Settings</h3>
+                        <div class="setting-item">
+                            <label>Platform Name</label>
+                            <input type="text" value="Coastal Guardian Platform" class="setting-input">
+                        </div>
+                        <div class="setting-item">
+                            <label>Admin Email</label>
+                            <input type="email" value="admin@coastalguardian.org" class="setting-input">
+                        </div>
+                        <div class="setting-item">
+                            <label>Auto-approve submissions below</label>
+                            <div class="input-group">
+                                <input type="number" value="50" class="setting-input">
+                                <span>CGT value</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Notification Settings</h3>
+                        <div class="setting-item">
+                            <div class="setting-toggle">
+                                <input type="checkbox" id="email-notifications" checked>
+                                <label for="email-notifications">Email notifications for new submissions</label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-toggle">
+                                <input type="checkbox" id="daily-reports" checked>
+                                <label for="daily-reports">Daily activity reports</label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-toggle">
+                                <input type="checkbox" id="threat-alerts">
+                                <label for="threat-alerts">Immediate alerts for threat reports</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Security Settings</h3>
+                        <div class="setting-item">
+                            <label>Session timeout (minutes)</label>
+                            <input type="number" value="60" class="setting-input">
+                        </div>
+                        <div class="setting-item">
+                            <button class="btn btn-outline">Change Password</button>
+                        </div>
+                        <div class="setting-item">
+                            <button class="btn btn-outline">Enable Two-Factor Authentication</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button class="btn btn-primary">Save All Settings</button>
+                    <button class="btn btn-outline">Reset to Defaults</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Create Event Modal -->
+    <div id="createEventModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeCreateEventModal()">&times;</span>
+            <div class="modal-header">
+                <h2>Create New Event</h2>
+                <p>Define a new conservation activity for guardians to participate in</p>
+            </div>
+            <form id="createEventForm" onsubmit="createEvent(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Event Name</label>
+                        <input type="text" name="eventName" required class="form-input" placeholder="e.g., Coral Restoration">
+                    </div>
+                    <div class="form-group">
+                        <label>Event Emoji</label>
+                        <input type="text" name="eventEmoji" required class="form-input" placeholder="🪸" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label>Reward Value</label>
+                        <div class="input-group">
+                            <input type="number" name="rewardValue" required class="form-input" placeholder="100">
+                            <span>CGT</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Reward Unit</label>
+                        <input type="text" name="rewardUnit" required class="form-input" placeholder="e.g., per coral fragment">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Description</label>
+                        <textarea name="eventDescription" required class="form-textarea" rows="3" placeholder="Describe the conservation activity and its impact..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="eventCategory" required class="form-select">
+                            <option value="">Select category</option>
+                            <option value="restoration">Restoration</option>
+                            <option value="monitoring">Monitoring</option>
+                            <option value="cleanup">Cleanup</option>
+                            <option value="education">Education</option>
+                            <option value="research">Research</option>
+                            <option value="protection">Protection</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="eventStatus" required class="form-select">
+                            <option value="active">Active</option>
+                            <option value="draft">Draft</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeCreateEventModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div id="rejectModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeRejectModal()">&times;</span>
+            <div class="modal-header">
+                <h2>Reject Submission</h2>
+                <p>Please provide a reason for rejecting this submission</p>
+            </div>
+            <form id="rejectForm" onsubmit="rejectSubmission(event)">
+                <div class="form-group">
+                    <label>Rejection Reason</label>
+                    <select name="rejectionReason" required class="form-select">
+                        <option value="">Select a reason</option>
+                        <option value="insufficient-evidence">Insufficient Evidence</option>
+                        <option value="poor-quality-photos">Poor Quality Photos</option>
+                        <option value="incorrect-location">Incorrect Location</option>
+                        <option value="duplicate-submission">Duplicate Submission</option>
+                        <option value="guidelines-violation">Guidelines Violation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Additional Comments</label>
+                    <textarea name="rejectionComments" class="form-textarea" rows="4" placeholder="Provide specific feedback to help the user improve future submissions..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeRejectModal()">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Reject Submission</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../scripts/admin.js"></script>
+</body>
+</html>

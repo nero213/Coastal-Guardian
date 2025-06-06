@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guardian - Pangasinan Conservation Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="../css/Coastal_cleanup.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🌊</div>
+                <span>Coastal Guardian</span>
+            </div>
+            <a href="#" class="return-btn" onclick="returnToWelcome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Return to Welcome
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Map Section -->
+        <div class="map-section">
+            <div class="map-header">
+                <div>
+                    <h2 class="map-title">Pangasinan Conservation Events</h2>
+                    <p>Interactive map with real geographic coordinates</p>
+                </div>
+                <div class="map-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalEvents">12</span>
+                        <span>Active Events</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalParticipants">847</span>
+                        <span>Participants</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <!-- Map Controls Panel -->
+                <div class="map-controls-panel">
+                    <div class="controls-title">Quick Actions</div>
+                    <button class="control-btn" onclick="centerOnPangasinan()">📍 Center Pangasinan</button>
+                    <button class="control-btn" onclick="showAllEvents()">🌊 Show All Events</button>
+                    <button class="control-btn" onclick="toggleSatellite()">🛰️ Toggle Satellite</button>
+                </div>
+
+                <!-- Leaflet Map -->
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Filter Panel -->
+            <div class="filter-panel">
+                <h3 class="filter-title">Event Filters</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        🌊 All Events
+                    </button>
+                    <button class="filter-btn" data-filter="cleanup">
+                        🧹 Beach Cleanups
+                    </button>
+                    <button class="filter-btn" data-filter="restoration">
+                        🪸 Restoration
+                    </button>
+                    <button class="filter-btn" data-filter="monitoring">
+                        🔬 Monitoring
+                    </button>
+                    <button class="filter-btn" data-filter="education">
+                        📚 Education
+                    </button>
+                </div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="event-details">
+                <div class="event-placeholder" id="eventPlaceholder">
+                    <div class="event-placeholder-icon">🗺️</div>
+                    <h3>Select an Event</h3>
+                    <p>Click on any marker on the map to view event details and join conservation efforts. Zoom in to see precise locations!</p>
+                </div>
+
+                <!-- Event Cards -->
+                <div class="event-card" id="event-1">
+                    <div class="event-header">
+                        <div class="event-icon">🧹</div>
+                        <div class="event-info">
+                            <h3>Lingayen Beach Cleanup</h3>
+                            <div class="event-location">📍 Lingayen Gulf, Pangasinan (16.0194°N, 120.2298°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Dec 15, 2024</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">45 / 60</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">4 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">15 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Join our community cleanup effort at Lingayen Beach, the historic landing site in WWII. Help remove plastic waste and debris from this culturally significant coastline while earning soulbound tokens.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(1)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-2">
+                    <div class="event-header">
+                        <div class="event-icon">🪸</div>
+                        <div class="event-info">
+                            <h3>Alaminos Coral Restoration</h3>
+                            <div class="event-location">📍 Alaminos Marine Sanctuary (16.1572°N, 119.9908°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Dec 18, 2024</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">12 / 20</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">6 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">25 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Participate in coral restoration near the famous Hundred Islands. Learn coral biology, transplantation techniques, and help rebuild damaged reef ecosystems in Alaminos Bay. Diving certification required.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(2)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-3">
+                    <div class="event-header">
+                        <div class="event-icon">🔬</div>
+                        <div class="event-info">
+                            <h3>Hundred Islands Marine Monitoring</h3>
+                            <div class="event-location">📍 Hundred Islands National Park (16.1943°N, 119.9344°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Dec 20, 2024</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">8 / 15</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">8 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">30 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Conduct scientific monitoring of marine biodiversity in the Philippines' first national park. Record fish populations, coral health, and water quality data around these pristine 123 islands and islets.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(3)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-4">
+                    <div class="event-header">
+                        <div class="event-icon">📚</div>
+                        <div class="event-info">
+                            <h3>Dagupan Conservation Workshop</h3>
+                            <div class="event-location">📍 Dagupan Community Center (15.9759°N, 120.3370°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Dec 22, 2024</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">35 / 50</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">3 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">10 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Educational workshop in Dagupan, the "Bangus Capital of the World". Learn about marine ecosystem protection, sustainable milkfish farming, and climate change impacts on fisheries.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(4)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-5">
+                    <div class="event-header">
+                        <div class="event-icon">🌿</div>
+                        <div class="event-info">
+                            <h3>Bolinao Mangrove Restoration</h3>
+                            <div class="event-location">📍 Bolinao Peninsula (16.3831°N, 119.8867°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Dec 25, 2024</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">28 / 40</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">5 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">20 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Plant mangrove seedlings at Bolinao's western peninsula tip. Learn about the crucial role of mangroves in coastal protection, carbon sequestration, and marine nursery habitat in this famous marine station area.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(5)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-6">
+                    <div class="event-header">
+                        <div class="event-icon">🐠</div>
+                        <div class="event-info">
+                            <h3>San Carlos Reef Survey</h3>
+                            <div class="event-location">📍 San Carlos Marine Reserve (15.9315°N, 120.3417°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Dec 28, 2024</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">15 / 25</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">6 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">25 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Underwater fish population survey in San Carlos coastal waters. Help document marine biodiversity and assess reef health indicators in this important fishing municipality.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(6)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-7">
+                    <div class="event-header">
+                        <div class="event-icon">💧</div>
+                        <div class="event-info">
+                            <h3>Anda Water Quality Assessment</h3>
+                            <div class="event-location">📍 Anda Coastal Waters (16.2642°N, 119.9908°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Jan 2, 2025</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">20 / 30</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">4 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">18 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Conduct comprehensive water quality testing in Anda's pristine beaches. Learn to use professional equipment for pH, dissolved oxygen, turbidity, and nutrient analysis in this emerging eco-tourism destination.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(7)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-8">
+                    <div class="event-header">
+                        <div class="event-icon">👥</div>
+                        <div class="event-info">
+                            <h3>Bani Community Outreach</h3>
+                            <div class="event-location">📍 Bani Municipal Hall (16.1936°N, 119.8344°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Jan 5, 2025</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">42 / 60</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">6 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">12 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Engage with Bani's fishing communities to promote sustainable practices. This coastal municipality is known for its rich marine resources - help educate and gather feedback on conservation initiatives.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(8)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-9">
+                    <div class="event-header">
+                        <div class="event-icon">🏖️</div>
+                        <div class="event-info">
+                            <h3>Labrador Beach Cleanup</h3>
+                            <div class="event-location">📍 Labrador Beach (15.8789°N, 120.1167°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Jan 8, 2025</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">38 / 50</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">5 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">16 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Large-scale beach cleanup in Labrador's extensive coastline. Focus on microplastics and marine debris affecting this important fishing municipality's beautiful beaches.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(9)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-10">
+                    <div class="event-header">
+                        <div class="event-icon">🌱</div>
+                        <div class="event-info">
+                            <h3>Infanta Seagrass Restoration</h3>
+                            <div class="event-location">📍 Infanta Marine Sanctuary (16.2167°N, 120.0667°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Jan 12, 2025</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">18 / 25</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">7 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">28 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Underwater seagrass planting in Infanta's coastal waters. Learn about seagrass ecology, carbon sequestration benefits, and transplantation techniques in this municipality known for its pristine marine environment.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(10)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-11">
+                    <div class="event-header">
+                        <div class="event-icon">🐢</div>
+                        <div class="event-info">
+                            <h3>Dasol Turtle Monitoring</h3>
+                            <div class="event-location">📍 Dasol Nesting Beach (16.2167°N, 119.8833°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Jan 15, 2025</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">12 / 20</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">8 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">35 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Night patrol in Dasol to monitor sea turtle nesting activities. This northwestern coastal municipality is a critical nesting site - help record data, protect nests, and assist with hatchling releases.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(11)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <div class="event-card" id="event-12">
+                    <div class="event-header">
+                        <div class="event-icon">🎓</div>
+                        <div class="event-info">
+                            <h3>Agno Youth Marine Education</h3>
+                            <div class="event-location">📍 Agno High School (15.8833°N, 120.0167°E)</div>
+                        </div>
+                    </div>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">Jan 18, 2025</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Participants</div>
+                            <div class="meta-value">55 / 80</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">4 hours</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">SBT Reward</div>
+                            <div class="meta-value">8 tokens</div>
+                        </div>
+                    </div>
+                    <div class="event-description">
+                        Interactive educational program for Agno high school students. This river delta municipality faces unique coastal challenges - teach marine science, climate change impacts, and conservation careers.
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary" onclick="joinEvent(12)">
+                            Join Event
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-secondary">Share</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet MarkerCluster JavaScript -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="../scripts/maps.js"></script>
+</body>
+</html>

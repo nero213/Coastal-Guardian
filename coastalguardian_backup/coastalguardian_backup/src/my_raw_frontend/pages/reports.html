@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guardian | Report Environmental Threats</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="../css/reports.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Coastal Guardian</a>
+            <button class="return-btn" onclick="returnToWelcome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Return to Dashboard
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="header-section">
+        <div class="container">
+            <h1 class="page-title fade-in">Report Environmental Threats</h1>
+            <p class="page-subtitle fade-in">
+                Help protect our coastal ecosystems by reporting environmental threats. Your vigilance makes a difference in preserving marine habitats for future generations.
+            </p>
+            <div class="reward-badge fade-in">
+                <span>🪙 Earn <strong>+150 CGT</strong> for each verified threat report</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container fade-in">
+                <div class="form-header">
+                    <div class="form-icon">🛡️</div>
+                    <h2 class="form-title">Environmental Threat Report</h2>
+                </div>
+                <div class="form-content">
+                    <form id="threatReportForm">
+                        <!-- Location Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Location of Threat</label>
+                            <div class="map-container">
+                                <div id="map"></div>
+                            </div>
+                            <div class="coordinates-display">
+                                <div class="coordinate-input">
+                                    <label class="form-label">Latitude</label>
+                                    <input type="text" id="latitude" class="form-input" placeholder="e.g. 16.0194" required>
+                                </div>
+                                <div class="coordinate-input">
+                                    <label class="form-label">Longitude</label>
+                                    <input type="text" id="longitude" class="form-input" placeholder="e.g. 120.2298" required>
+                                </div>
+                            </div>
+                            <p class="form-help">Click on the map to set the location or enter coordinates manually</p>
+                        </div>
+
+                        <!-- Threat Type -->
+                        <div class="form-group">
+                            <label class="form-label" for="threatType">Type of Threat</label>
+                            <select id="threatType" class="form-select" required>
+                                <option value="" disabled selected>Select threat type</option>
+                                <option value="illegal_fishing">Illegal Fishing</option>
+                                <option value="pollution">Pollution/Waste Dumping</option>
+                                <option value="habitat_destruction">Habitat Destruction</option>
+                                <option value="coral_damage">Coral Reef Damage</option>
+                                <option value="oil_spill">Oil Spill</option>
+                                <option value="wildlife_harm">Wildlife Harm/Poaching</option>
+                                <option value="coastal_development">Unauthorized Coastal Development</option>
+                                <option value="other">Other (Please Specify)</option>
+                            </select>
+                        </div>
+
+                        <!-- Other Threat Type -->
+                        <div class="form-group" id="otherThreatGroup" style="display: none;">
+                            <label class="form-label" for="otherThreatType">Specify Threat Type</label>
+                            <input type="text" id="otherThreatType" class="form-input" placeholder="Please specify the threat type">
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group">
+                            <label class="form-label" for="description">Description of Incident</label>
+                            <textarea id="description" class="form-textarea" placeholder="Please provide detailed information about what you observed..." required></textarea>
+                            <p class="form-help">Include details such as date, time, extent of the threat, and any other relevant information</p>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="form-group">
+                            <label class="form-label">Evidence Upload</label>
+                            <div class="file-upload">
+                                <div class="file-upload-icon">📷</div>
+                                <div class="file-upload-text">Drag & drop files or click to browse</div>
+                                <div class="file-upload-subtext">Upload photos or videos as evidence (max 5 files, 10MB each)</div>
+                                <input type="file" id="fileUpload" multiple accept="image/*,video/*">
+                            </div>
+                            <div class="file-preview" id="filePreview">
+                                <div class="preview-grid" id="previewGrid"></div>
+                            </div>
+                        </div>
+
+                        <!-- Wallet Address -->
+                        <div class="form-group">
+                            <label class="form-label" for="walletAddress">Wallet Address for Rewards</label>
+                            <input type="text" id="walletAddress" class="form-input" placeholder="0x..." required>
+                            <p class="form-help">Enter your Web3 wallet address to receive CGT tokens upon verification</p>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            Submit Threat Report
+                        </button>
+                    </form>
+
+                    <!-- Verification Note -->
+                    <div class="verification-note">
+                        <h3 class="verification-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            Verification Process
+                        </h3>
+                        <p class="verification-text">
+                            All submitted reports undergo a thorough verification process by our conservation team. Verified reports earn 150 CGT tokens as a reward for your environmental vigilance.
+                        </p>
+                        <p class="verification-text">
+                            False reports will not receive rewards. Please ensure all information provided is accurate and truthful.
+                        </p>
+                        <div class="blockchain-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                            Permanently Recorded On-Chain
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">Report Submitted Successfully!</h3>
+            <p class="modal-text">
+                Thank you for your vigilance! Your environmental threat report has been submitted and will be reviewed by our conservation team. Upon verification, 150 CGT tokens will be transferred to your wallet.
+            </p>
+            <button class="modal-btn" onclick="closeModal()">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="../scripts/reports.js">
+        // Initialize map
+        
+    </script>
+</body>
+</html>

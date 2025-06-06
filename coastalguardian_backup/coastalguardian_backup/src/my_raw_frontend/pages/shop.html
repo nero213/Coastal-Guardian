@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Guardian | NFT Achievement Shop</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../css/shop.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Coastal Guardian Shop</a>
+            <div class="nav-actions">
+                <a href="#" class="nav-btn" onclick="returnToWelcome()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Return to Welcome
+                </a>
+                <button class="nav-btn logout" onclick="logout()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="header-section">
+        <div class="container">
+            <h1 class="page-title fade-in">Achievement NFT Shop</h1>
+            <p class="page-subtitle fade-in">
+                Purchase soulbound NFTs that showcase your verified contributions to coastal conservation. 
+                These non-transferable tokens serve as permanent proof of your environmental impact.
+            </p>
+
+            <!-- Token Balance -->
+            <div class="token-balance fade-in">
+                <div class="balance-content">
+                    <div class="balance-label">Your Ocean Guardian Tokens</div>
+                    <div class="balance-amount">
+                        <span class="token-icon">🪙</span>
+                        <span id="userTokenBalance">247</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All NFTs</button>
+                <button class="filter-btn" data-filter="cleanup">Beach Cleanup</button>
+                <button class="filter-btn" data-filter="restoration">Restoration</button>
+                <button class="filter-btn" data-filter="monitoring">Monitoring</button>
+                <button class="filter-btn" data-filter="education">Education</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NFT Grid -->
+    <section class="nft-section">
+        <div class="container">
+            <div class="nft-grid" id="nftGrid">
+                <!-- NFT Cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Confirmation Modal -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-icon">🛒</div>
+            <h3 class="modal-title">Confirm Purchase</h3>
+            <p class="modal-text" id="modalText">
+                Are you sure you want to purchase this soulbound NFT? This action cannot be undone and the NFT will be permanently bound to your account.
+            </p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" id="confirmPurchase">
+                    Confirm Purchase
+                </button>
+                <button class="modal-btn secondary" onclick="closeModal()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">Purchase Successful!</h3>
+            <p class="modal-text">
+                Congratulations! Your soulbound NFT has been successfully minted and added to your collection. 
+                This achievement is now permanently recorded on the blockchain.
+            </p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" onclick="closeModal()">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-icon">❌</div>
+            <h3 class="modal-title">Purchase Failed</h3>
+            <p class="modal-text" id="errorText">
+                Insufficient tokens to complete this purchase. Participate in more coastal cleanup events to earn additional tokens.
+            </p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" onclick="closeModal()">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/shop.js">
+        
+    </script>
+</body>
+</html>
