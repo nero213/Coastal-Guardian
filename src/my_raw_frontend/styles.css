@@ -483,6 +483,7 @@ body {
     border: 2px solid var(--accent-coral);
     cursor: pointer;
     transition: all 0.3s ease;
+    margin: 1.2rem 0;
 }
 
 .wallet-btn:hover {
