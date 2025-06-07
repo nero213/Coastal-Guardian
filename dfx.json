@@ -7,13 +7,19 @@
     "my_raw_frontend": {
       "type": "assets",
       "source": [
-        "src/my_raw_frontend",  
+        "src/my_raw_frontend",
         "src/declarations"
       ],
-      "build": [], 
+      "build": [],
       "declarations": {
         "output": ""
-      }
+      },
+      "headers": [
+        {
+          "name": "Content-Security-Policy",
+          "value": "default-src 'self'; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://esm.sh; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://cdn.iconscout.com https://placehold.co;"
+        }
+      ]
     }
   },
   "defaults": {

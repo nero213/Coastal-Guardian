@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap"
         rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/walletlink@2/dist/walletlink.min.js"></script>
+    <!-- REMOVE THIS OLD WALLETLINK SCRIPT: <script src="https://cdn.jsdelivr.net/npm/walletlink@2/dist/walletlink.min.js"></script> -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -145,8 +145,12 @@
             </div>
         </div>
     </div>
+    <!-- IMPORTANT: Load Coinbase Wallet SDK as a regular script BEFORE wallet.js -->
+    <script src="https://unpkg.com/@coinbase/wallet-sdk@4.3.4/dist/index.js"></script>
+    <!-- wallet.js should be a regular script as it uses a global variable from the SDK -->
+    <script  src="wallet.js"></script>
+    <!-- main.js can be a module -->
     <script type="module" src="main.js"></script>
-    <script type="module" src="wallet.js"></script>
 </body>
 
 </html>

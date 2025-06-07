@@ -1,189 +1,268 @@
 // src/my_raw_frontend/main.js
-import { AuthClient } from "@dfinity/auth-client";
-// // REMOVE: import { Identity } from "@dfinity/agent"; // This line is causing the error
+// This script handles Internet Identity and Plug Wallet connections.
 
-// // --- DOM Elements ---
-const connectPlugButton = document.getElementById("connectPlugButton");
-const connectIIButton = document.getElementById("connectIIButton");
-const disconnectWalletButton = document.getElementById("disconnectWalletButton");
-const walletStatus = document.getElementById("walletStatus");
-const principalIdDiv = document.getElementById("principalId");
+// Import necessary DFINITY modules from CDN.
+import { AuthClient } from "https://esm.sh/@dfinity/auth-client@latest";
+import { Principal } from "https://esm.sh/@dfinity/principal@latest";
 
-// --- Configuration ---
+// --- Global Variable Declarations ---
+// These variables will hold references to DOM elements and client instances.
+// They are declared globally but assigned *inside* DOMContentLoaded.
+// NOTE: For 'updateUI', elements will be re-fetched dynamically for robustness.
+let connectPlugButton;
+let connectIIButton;
+let disconnectWalletButton;
+let walletStatus;
+let principalIdDiv;
+let connectCoinbaseWalletButton;
+
+let authClientInstance; // Internet Identity AuthClient instance
+
+// Make authClientInstance globally accessible for other scripts (e.g., wallet.js).
+// This is crucial for cross-script communication, especially for disconnect logic.
+window.authClientInstance = authClientInstance;
+
+// --- Configuration Constants ---
+// Dashboard URL after successful login.
+// IMPORTANT: For mainnet deployment, change '.localhost:4943' to '.ic0.app'.
 const DASHBOARD_URL = "http://u6s2n-gx777-77774-qaaba-cai.localhost:4943/pages/dashboard.html";
-const II_IDENTITY_PROVIDER = "https://identity.ic0.app"; // Official Internet Identity provider
-const PLUG_WHITELIST_CANISTER_ID = ["uqqxf-5h777-77774-qaaaa-cai"]; // Your canister ID - ENSURE THIS IS CORRECT
-const PLUG_HOST = "http://localhost:4943"; // Your local IC replica host
 
-// --- AuthClient instance (for Internet Identity) ---
-let authClientInstance;
+// Official Internet Identity provider URL.
+const II_IDENTITY_PROVIDER = "https://identity.ic0.app";
+
+// Whitelist of canister IDs that Plug Wallet is allowed to interact with.
+// IMPORTANT: Replace "uqqxf-5h777-77774-qaaaa-cai" with your actual frontend canister ID.
+// This is crucial for Plug to recognize your DApp.
+const PLUG_WHITELIST_CANISTER_ID = ["uqqxf-5h777-77774-qaaaa-cai"];
+
+// Host for Plug Wallet connection (local replica vs. mainnet).
+const PLUG_HOST = "http://localhost:4943"; // Use "https://ic0.app" for mainnet.
 
 // --- Utility Functions ---
 
+/**
+ * Initializes the DFINITY AuthClient for Internet Identity.
+ * Ensures the AuthClient is created only once.
+ * @returns {AuthClient|null} The initialized AuthClient instance or null if an error occurs.
+ */
 async function initializeAuthClient() {
-    if (!authClientInstance) {
+    if (!authClientInstance) { // Only create if not already initialized
         try {
             authClientInstance = await AuthClient.create({
                 idleOptions: {
-                    disableIdle: true, // Keep the session alive indefinitely for dev
+                    disableIdle: true, // Keep session alive indefinitely for development ease
+                    // For production, consider: idleTimeout: 1000 * 60 * 60 * 24, // 24 hours
+                    // and disableDefaultIdleCallback: true if handling logout manually.
                 }
             });
             console.log("AuthClient initialized successfully.");
+            // Update the global reference to the initialized instance.
+            window.authClientInstance = authClientInstance;
         } catch (error) {
             console.error("Error initializing AuthClient:", error);
-            walletStatus.innerText = "❌ Error initializing Internet Identity client.";
-            return null;
+            // Safely update UI if walletStatus element is available.
+            if (document.getElementById("walletStatus")) {
+                document.getElementById("walletStatus").innerText = "❌ Error initializing Internet Identity client.";
+            }
+            return null; // Return null to indicate initialization failure.
         }
     }
     return authClientInstance;
 }
 
-// Function to update UI based on authentication status
-// Now accepts a Principal object directly for Plug, or an Identity for II
-async function updateUI(principal = null) {
-    if (principal && principal.isAnonymous()) {
-        principal = null; // Treat anonymous principal as not authenticated for UI purposes
+/**
+ * Updates the UI based on the provided Principal (or null for a disconnected state).
+ * This function is made globally accessible (`window.updateUI`) so it can be called
+ * by both main.js and wallet.js to ensure consistent UI synchronization.
+ * It also handles automatic redirection to the dashboard upon successful authentication.
+ * For robustness, it re-fetches DOM elements every time it's called.
+ * @param {Principal|null} principal The Principal ID of the authenticated user, or null if disconnected.
+ */
+window.updateUI = async function (principal = null) {
+    // Re-fetch DOM elements every time for maximum robustness against timing issues.
+    const currentPrincipalIdDiv = document.getElementById("principalId");
+    const currentWalletStatus = document.getElementById("walletStatus");
+    const currentConnectPlugButton = document.getElementById("connectPlugButton");
+    const currentConnectIIButton = document.getElementById("connectIIButton");
+    const currentConnectCoinbaseWalletButton = document.getElementById("connectCoinbaseWallet");
+    const currentDisconnectWalletButton = document.getElementById("disconnectWalletButton");
+
+    // Treat an anonymous Principal as a disconnected state for UI purposes.
+    if (principal && principal instanceof Principal && principal.isAnonymous()) {
+        principal = null;
     }
 
+    // Update the UI elements based on the authentication status.
     if (principal) {
-        principalIdDiv.innerText = "🔑 Principal ID: " + principal.toString();
-        walletStatus.innerText = "✅ Authenticated!";
+        if (currentPrincipalIdDiv) currentPrincipalIdDiv.innerText = "🔑 Principal ID: " + principal.toString();
+        if (currentWalletStatus) currentWalletStatus.innerText = "✅ Authenticated!";
 
-        connectPlugButton.style.display = "none";
-        connectIIButton.style.display = "none";
-        disconnectWalletButton.style.display = "inline-block";
+        // Hide connection buttons and show the disconnect button.
+        if (currentConnectPlugButton) currentConnectPlugButton.style.display = "none";
+        if (currentConnectIIButton) currentConnectIIButton.style.display = "none";
+        if (currentConnectCoinbaseWalletButton) currentConnectCoinbaseWalletButton.style.display = "none";
+        if (currentDisconnectWalletButton) currentDisconnectWalletButton.style.display = "inline-block";
 
-        // Redirect to dashboard on successful login
-        console.log("Redirecting to dashboard:", DASHBOARD_URL);
-        window.location.href = DASHBOARD_URL;
-
+        // Redirect to the dashboard if not already there.
+        if (window.location.href !== DASHBOARD_URL) {
+            console.log("Redirecting to dashboard:", DASHBOARD_URL);
+            window.location.href = DASHBOARD_URL;
+        }
     } else {
-        principalIdDiv.innerText = "";
-        walletStatus.innerText = "Please connect a wallet or use Internet Identity.";
-        connectPlugButton.style.display = "inline-block";
-        connectIIButton.style.display = "inline-block";
-        disconnectWalletButton.style.display = "none";
+        // Reset the UI to show connection buttons and clear status.
+        if (currentPrincipalIdDiv) currentPrincipalIdDiv.innerText = "";
+        if (currentWalletStatus) currentWalletStatus.innerText = "Please connect a wallet or use Internet Identity.";
+
+        // Show connection buttons and hide the disconnect button.
+        if (currentConnectPlugButton) currentConnectPlugButton.style.display = "inline-block";
+        if (currentConnectIIButton) currentConnectIIButton.style.display = "inline-block";
+        if (currentConnectCoinbaseWalletButton) currentConnectCoinbaseWalletButton.style.display = "inline-block";
+        if (currentDisconnectWalletButton) currentDisconnectWalletButton.style.display = "none";
     }
-}
+};
 
-// --- Event Listeners ---
 
-// Internet Identity Login
-connectIIButton.addEventListener("click", async () => {
-    walletStatus.innerText = "Connecting to Internet Identity...";
-    const client = await initializeAuthClient();
-    if (!client) return;
+// --- Main Execution Block: DOMContentLoaded Event Listener ---
+// All code that interacts with the DOM must be inside this listener
+// to ensure the HTML elements are fully loaded and accessible.
+document.addEventListener('DOMContentLoaded', async () => {
+    // --- Step 1: Safely get references to all DOM elements ---
+    // These assignments happen once after the DOM is fully loaded.
+    connectPlugButton = document.getElementById("connectPlugButton");
+    connectIIButton = document.getElementById("connectIIButton");
+    disconnectWalletButton = document.getElementById("disconnectWalletButton");
+    walletStatus = document.getElementById("walletStatus");
+    principalIdDiv = document.getElementById("principalId");
+    connectCoinbaseWalletButton = document.getElementById("connectCoinbaseWallet");
 
-    try {
-        await client.login({
-            identityProvider: II_IDENTITY_PROVIDER,
-            onSuccess: async () => {
-                const identity = client.getIdentity();
-                const principal = identity.getPrincipal(); // Get principal from the identity
-                await updateUI(principal); // Pass the Principal object
-            },
-            onError: (err) => {
-                console.error("Internet Identity login error:", err);
-                walletStatus.innerText = "❌ Internet Identity login failed: " + err;
+
+    // --- Step 2: Attach Event Listeners to Buttons ---
+    // Ensure each button element exists before attaching an event listener.
+
+    // Internet Identity Login Button
+    if (connectIIButton) {
+        connectIIButton.addEventListener("click", async () => {
+            if (walletStatus) walletStatus.innerText = "Connecting to Internet Identity...";
+            const client = await initializeAuthClient(); // Initialize AuthClient
+            if (!client) return; // Exit if initialization failed
+
+            try {
+                await client.login({
+                    identityProvider: II_IDENTITY_PROVIDER,
+                    onSuccess: async () => {
+                        const identity = client.getIdentity();
+                        const principal = identity.getPrincipal();
+                        await window.updateUI(principal); // Use the global updateUI function
+                    },
+                    onError: (err) => {
+                        console.error("Internet Identity login error:", err);
+                        if (walletStatus) walletStatus.innerText = "❌ Internet Identity login failed: " + err;
+                    },
+                    maxTimeToLive: BigInt(5 * 60 * 1000 * 1000 * 1000), // 5 minutes in nanoseconds
+                });
+            } catch (err) {
+                console.error("Internet Identity login exception:", err);
+                if (walletStatus) walletStatus.innerText = "❌ Error during Internet Identity login: " + err.message;
             }
         });
-    } catch (err) {
-        console.error("Internet Identity login exception:", err);
-        walletStatus.innerText = "❌ Error during Internet Identity login: " + err.message;
     }
-});
 
-// Plug Wallet Login
-connectPlugButton.addEventListener("click", async () => {
-    walletStatus.innerText = "Connecting to Plug Wallet...";
-    if (window.ic && window.ic.plug) {
-        try {
-            const isConnected = await window.ic.plug.isConnected();
-            if (!isConnected) {
-                const success = await window.ic.plug.requestConnect({
-                    whitelist: PLUG_WHITELIST_CANISTER_ID,
-                    host: PLUG_HOST
-                });
-                if (!success) {
-                    walletStatus.innerText = "❌ Plug Wallet connection denied.";
-                    return;
+    // Plug Wallet Login Button
+    if (connectPlugButton) {
+        connectPlugButton.addEventListener("click", async () => {
+            if (walletStatus) walletStatus.innerText = "Connecting to Plug Wallet...";
+            if (window.ic && window.ic.plug) { // Check if Plug extension object exists
+                try {
+                    const isConnected = await window.ic.plug.isConnected();
+                    if (!isConnected) {
+                        const success = await window.ic.plug.requestConnect({
+                            whitelist: PLUG_WHITELIST_CANISTER_ID,
+                            host: PLUG_HOST
+                        });
+                        if (!success) {
+                            if (walletStatus) walletStatus.innerText = "❌ Plug Wallet connection denied.";
+                            return;
+                        }
+                    }
+                    const principal = await window.ic.plug.getPrincipal(); // Get Plug's Principal
+                    await window.updateUI(principal); // Use the global updateUI function
+                } catch (err) {
+                    console.error("Plug Wallet connection error:", err);
+                    if (walletStatus) walletStatus.innerText = "❌ Error connecting to Plug Wallet: " + err.message;
                 }
+            } else {
+                if (walletStatus) walletStatus.innerText = "🦊 Plug Wallet not found. Please install the extension.";
+                console.warn("Plug Wallet not detected. Please install the Plug browser extension.");
             }
-
-            const principal = await window.ic.plug.getPrincipal(); // Plug gives you the Principal directly
-            await updateUI(principal); // Pass the Principal object
-
-        } catch (err) {
-            console.error("Plug Wallet connection error:", err);
-            walletStatus.innerText = "❌ Error connecting to Plug Wallet: " + err.message;
-        }
-    } else {
-        walletStatus.innerText = "🦊 Plug Wallet not found. Please install the extension.";
-        console.warn("Plug Wallet not detected. Please install the Plug browser extension.");
+        });
     }
-});
 
+    // Disconnect Wallet Button
+    // This listener is responsible for logging out from Internet Identity and clearing Plug state.
+    // Coinbase Wallet disconnection is handled by wallet.js.
+    if (disconnectWalletButton) {
+        disconnectWalletButton.addEventListener("click", async () => {
+            if (walletStatus) walletStatus.innerText = "Disconnecting...";
+            try {
+                // Handle Internet Identity logout
+                if (window.authClientInstance && await window.authClientInstance.isAuthenticated()) {
+                    await window.authClientInstance.logout();
+                    console.log("Logged out from Internet Identity.");
+                }
 
-// Disconnect Wallet (for both II and Plug)
-disconnectWalletButton.addEventListener("click", async () => {
-    walletStatus.innerText = "Disconnecting...";
-    try {
-        if (authClientInstance && await authClientInstance.isAuthenticated()) {
-            await authClientInstance.logout();
-            console.log("Logged out from Internet Identity.");
-        }
+                // Handle Plug Wallet state cleanup (user usually disconnects via extension)
+                if (window.ic && window.ic.plug && await window.ic.plug.isConnected()) {
+                    if (walletStatus) walletStatus.innerText = "Disconnected. For Plug, you might need to disconnect in your extension settings.";
+                    console.log("Plug Wallet connection managed by extension. UI cleared.");
+                }
 
-        if (window.ic && window.ic.plug && await window.ic.plug.isConnected()) {
-            // For Plug, usually the user manages disconnect via the extension.
-            // We can instruct them, or just reset our UI state.
-            walletStatus.innerText = "Disconnected. For Plug, you might need to disconnect in your extension settings.";
-            console.log("Plug Wallet connection managed by extension. UI cleared.");
-        } else {
-            walletStatus.innerText = "Disconnected.";
-        }
-
-        updateUI(null); // Pass null to reset UI
-
-    } catch (err) {
-        console.error("Logout error:", err);
-        walletStatus.innerText = "❌ Error during logout: " + err.message;
+                // Call the global updateUI function to reset the entire interface.
+                window.updateUI(null);
+            } catch (err) {
+                console.error("Logout error:", err);
+                if (walletStatus) walletStatus.innerText = "❌ Error during logout: " + err.message;
+            }
+        });
     }
-});
 
 
-// --- Initial check on page load ---
-document.addEventListener('DOMContentLoaded', async () => {
-    // Check for Plug connection first, as it's simpler
+    // --- Step 3: Initial Check for Existing Wallet Connections on Page Load ---
+    // This runs once the DOM is ready to determine the initial authentication status.
+
+    // Initialize AuthClient first, as it's needed for Internet Identity checks.
+    const client = await initializeAuthClient();
+    if (!client) {
+        window.updateUI(null); // Ensure UI is reset if AuthClient fails to initialize.
+        return;
+    }
+
+    // Check for an existing Plug Wallet connection.
     if (window.ic && window.ic.plug) {
         const plugConnected = await window.ic.plug.isConnected();
         if (plugConnected) {
             console.log("Already connected with Plug Wallet.");
-            const principal = await window.ic.plug.getPrincipal();
-            updateUI(principal); // Update UI and redirect
-            return; // Exit as Plug was handled
+            try {
+                const principal = await window.ic.plug.getPrincipal();
+                await window.updateUI(principal); // Update UI and potentially redirect.
+                return; // Exit as a connection was found and handled.
+            } catch (error) {
+                console.error("Error getting Plug principal on load:", error);
+                // If Plug check fails, fall through to Internet Identity check.
+            }
         }
     }
 
-    // Then check for Internet Identity
-    const client = await initializeAuthClient();
-    if (!client) {
-        updateUI(null); // Ensure UI is reset if II client fails to init
-        return;
-    }
-
+    // Check for an existing Internet Identity authentication.
     if (await client.isAuthenticated()) {
         const identity = client.getIdentity();
-        const principal = identity.getPrincipal(); // Get principal from the identity
-        if (!principal.isAnonymous()) {
+        const principal = identity.getPrincipal();
+        if (!principal.isAnonymous()) { // Ensure it's not an anonymous identity.
             console.log("Already authenticated with Internet Identity.");
-            updateUI(principal); // Update UI and redirect
-            return; // Exit as II was handled
+            await window.updateUI(principal); // Update UI and potentially redirect.
+            return; // Exit as a connection was found and handled.
         }
     }
 
-    // If neither is connected, reset UI to show connect buttons
-    updateUI(null);
+    // If no existing connection (Plug or Internet Identity) is found, reset the UI.
+    window.updateUI(null);
 });
-
-// Coinbase Wallet Integration
-// Coinbase Wallet Integration with Redirection
