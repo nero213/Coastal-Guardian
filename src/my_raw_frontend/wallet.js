@@ -1,25 +1,20 @@
 // wallet.js
-// This script handles Coinbase Wallet connection using the Coinbase Wallet SDK.
+// This script handles Coinbase Wallet connection using Web3-Onboard,
+// and maintains existing Internet Identity and Plug Wallet logic.
 
 // --- Global Variable Declarations (Declared with 'let', assigned within window.onload) ---
 let walletStatus;
 let disconnectWalletButton;
-let principalIdDiv; // Used to display ETH address for Coinbase Wallet
+let principalIdDiv; // Used to display wallet address
 let connectCoinbaseWalletButton; // Reference to the Coinbase Wallet button
 
-let coinbaseWallet; // Coinbase Wallet SDK instance
+let web3OnboardInstance; // Web3-Onboard instance
 
-// --- Configuration Constants for Coinbase Wallet ---
-// IMPORTANT: The Coinbase Wallet SDK (coinbase-wallet-sdk.js) is now assumed to be loaded
-// from your local file (src/my_raw_frontend/coinbase-wallet-sdk.js) via a <script> tag
-// in your HTML BEFORE this script runs, and NOT as a module.
-
-const APP_NAME = "CoastalGuard"; // Your application name
-const APP_LOGO_URL = "https://placehold.co/128x128/000/fff?text=AppLogo"; // URL to your application's logo
-const COINBASE_WALLET_INSTALL_URL = 'https://www.coinbase.com/wallet'; // Official Coinbase Wallet installation URL
-
+// --- Configuration Constants ---
+const APP_NAME = "CoastalGuard";
+const APP_LOGO_URL = "https://placehold.co/128x128/000/fff?text=AppLogo"; // Generic app logo
 const INFURA_RPC_URL = "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"; // IMPORTANT: Replace with your actual Infura Project ID
-const CHAIN_ID = 1; // Chain ID for Ethereum Mainnet.
+const CHAIN_ID = '0x1'; // Ethereum Mainnet Chain ID in hex string format for Web3-Onboard
 
 // --- Main Execution Block: window.onload Event Listener ---
 window.onload = () => {
@@ -34,69 +29,63 @@ window.onload = () => {
     console.log("wallet.js: walletStatus element:", walletStatus ? 'found' : 'NOT found');
     console.log("wallet.js: connectCoinbaseWalletButton element:", connectCoinbaseWalletButton ? 'found' : 'NOT found');
 
-
-    // --- Step 2: Attach Event Listener for Coinbase Wallet Connection Button ---
+    // --- Step 2: Initialize Web3-Onboard (if not already) and Attach Event Listeners ---
     if (connectCoinbaseWalletButton) {
         connectCoinbaseWalletButton.addEventListener('click', async () => {
             if (walletStatus) walletStatus.innerText = "Connecting to Coinbase Wallet...";
             console.log("wallet.js: Coinbase Wallet connect button clicked.");
 
             try {
-                let walletAddress = null;
-
-                // --- PRIORITY 1: Check for Coinbase Wallet browser extension via window.ethereum ---
-                console.log("wallet.js: Checking for window.ethereum...");
-                console.log("wallet.js: window.ethereum object:", window.ethereum);
-                console.log("wallet.js: window.ethereum.isCoinbaseWallet property:", window.ethereum ? window.ethereum.isCoinbaseWallet : 'N/A (window.ethereum not found)');
-
-                if (window.ethereum && window.ethereum.isCoinbaseWallet) {
-                    console.log("wallet.js: ✅ Coinbase Wallet extension detected via window.ethereum.");
-                    try {
-                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        walletAddress = accounts[0];
-                        console.log("wallet.js: Accounts requested from extension. Address:", walletAddress);
-                    } catch (extError) {
-                        console.error("wallet.js: ❌ Error connecting to Coinbase Wallet extension:", extError);
-                        if (walletStatus) walletStatus.innerText = '❌ Extension connection failed: ' + (extError.message || extError);
-                        return; // Stop if extension connection fails.
+                // Check if Web3-Onboard is initialized. It's exposed globally from index.html.
+                if (typeof window.initWeb3Onboard === 'undefined' || typeof window.coinbaseWalletModuleWeb3Onboard === 'undefined') {
+                    console.error("wallet.js: CRITICAL: Web3-Onboard or its Coinbase module is NOT defined. Check your 'index.html' script tags. This should not happen if index.html is correctly loaded.");
+                    if (walletStatus) {
+                        walletStatus.innerText = "❌ Wallet connection library not loaded. Please check console.";
                     }
-                } else {
-                    console.log("wallet.js: ℹ️ Coinbase Wallet extension NOT detected via window.ethereum. Falling back to WalletLink SDK.");
-
-                    // --- PRIORITY 2: Fallback to Coinbase Wallet SDK (WalletLink/QR code) ---
-                    // Since the SDK is now loaded locally, we assume CoinbaseWalletSDK is defined.
-                    // If it's still undefined here, it means the local file didn't load.
-                    if (typeof CoinbaseWalletSDK === 'undefined') {
-                        console.error("wallet.js: CRITICAL: CoinbaseWalletSDK is still NOT defined. This indicates the local 'coinbase-wallet-sdk.js' failed to load. Check your 'index.html' script tag and file path.");
-                        if (walletStatus) {
-                            walletStatus.innerText = "❌ Coinbase Wallet SDK failed to load locally. Please check console.";
-                        }
-                        return;
-                    }
-
-                    console.log("wallet.js: ✅ CoinbaseWalletSDK is defined. Proceeding with SDK initialization.");
-
-                    if (!coinbaseWallet) {
-                        console.log("wallet.js: Initializing CoinbaseWalletSDK instance.");
-                        coinbaseWallet = new CoinbaseWalletSDK({
-                            appName: APP_NAME,
-                            appLogoUrl: APP_LOGO_URL,
-                            darkMode: false
-                        });
-                    }
-
-                    const provider = coinbaseWallet.makeWeb3Provider(INFURA_RPC_URL, CHAIN_ID);
-                    console.log("wallet.js: makeWeb3Provider called for SDK.");
-
-                    const accounts = await provider.request({ method: 'eth_requestAccounts' });
-                    walletAddress = accounts[0];
-                    console.log("wallet.js: Accounts requested via SDK. Address:", walletAddress);
+                    return;
                 }
 
-                // --- Common UI Update after successful connection ---
-                if (walletAddress) {
+                // Initialize Web3-Onboard instance once.
+                if (!web3OnboardInstance) {
+                    console.log("wallet.js: Initializing Web3-Onboard instance.");
+                    web3OnboardInstance = window.initWeb3Onboard({
+                        wallets: [
+                            window.coinbaseWalletModuleWeb3Onboard() // Add Coinbase Wallet module
+                        ],
+                        chains: [
+                            {
+                                id: CHAIN_ID, // '0x1' for Ethereum Mainnet
+                                token: 'ETH',
+                                label: 'Ethereum Mainnet',
+                                rpcUrl: INFURA_RPC_URL
+                            }
+                        ],
+                        appMetadata: {
+                            name: APP_NAME,
+                            icon: APP_LOGO_URL,
+                            description: 'CoastalGuard DApp',
+                            recommendedInjectedWallets: [
+                                { name: 'Coinbase Wallet', url: 'https://www.coinbase.com/wallet' } // Correct URL for recommendation
+                            ]
+                        },
+                        connect: {
+                            autoConnectLastWallet: true // Optionally auto-connect last used wallet
+                        }
+                    });
+                }
+
+                // Connect to a wallet using Web3-Onboard
+                console.log("wallet.js: Calling web3OnboardInstance.connectWallet().");
+                const wallets = await web3OnboardInstance.connectWallet();
+
+                if (wallets && wallets.length > 0) {
+                    const connectedWallet = wallets[0]; // Get the first connected wallet
+                    const walletAddress = connectedWallet.accounts[0].address;
+                    console.log("wallet.js: Wallet connected via Web3-Onboard. Address:", walletAddress);
+
+                    // --- Common UI Update after successful connection ---
                     if (window.updateUI) {
-                        console.log("wallet.js: Calling window.updateUI with ETH address.");
+                        console.log("wallet.js: Calling window.updateUI with ETH address from Web3-Onboard.");
                         window.updateUI({
                             isAnonymous: () => false,
                             toString: () => `ETH: ${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`
@@ -106,6 +95,7 @@ window.onload = () => {
                         if (walletStatus) walletStatus.innerText = `✅ Connected: ${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`;
                         if (disconnectWalletButton) disconnectWalletButton.style.display = 'block';
 
+                        // Hide other connect buttons
                         const connectPlugButton = document.getElementById("connectPlugButton");
                         const connectIIButton = document.getElementById("connectIIButton");
                         if (connectPlugButton) connectPlugButton.style.display = "none";
@@ -118,41 +108,52 @@ window.onload = () => {
                         if (disconnectWalletButton) disconnectWalletButton.style.display = 'block';
                     }
 
-                    console.log('wallet.js: Successfully connected with Coinbase Wallet (ETH address).');
+                    console.log('wallet.js: Successfully connected with Web3-Onboard (ETH address).');
 
                 } else {
-                    console.error("wallet.js: No wallet address obtained after connection attempt.");
-                    if (walletStatus) walletStatus.innerText = '❌ Connection failed: No address obtained.';
+                    console.error("wallet.js: No wallet obtained after Web3-Onboard connection attempt.");
+                    if (walletStatus) walletStatus.innerText = '❌ Connection failed: No wallet selected or connected.';
                 }
 
             } catch (error) {
-                console.error('wallet.js: Coinbase Wallet connection error (top-level catch):', error);
+                console.error('wallet.js: Web3-Onboard connection error (top-level catch):', error);
                 if (walletStatus) walletStatus.innerText = '❌ Connection failed: ' + (error.message || error);
             }
         });
     }
 
-    // --- Step 3: Attach Event Listener for Disconnect Button (Handles Coinbase Wallet) ---
+    // --- Step 3: Attach Event Listener for Disconnect Button (Handles all wallets) ---
     if (disconnectWalletButton) {
         disconnectWalletButton.addEventListener("click", async () => {
             if (walletStatus) walletStatus.innerText = "Disconnecting...";
             console.log("wallet.js: Disconnect button clicked.");
             try {
+                // Disconnect from Internet Identity
                 if (window.authClientInstance && await window.authClientInstance.isAuthenticated()) {
                     await window.authClientInstance.logout();
                     console.log("wallet.js: Logged out from Internet Identity.");
                 }
 
+                // Disconnect from Plug Wallet
                 if (window.ic && window.ic.plug && await window.ic.plug.isConnected()) {
+                    // Plug's disconnect is typically managed by its extension, but clear local state.
                     if (walletStatus) walletStatus.innerText = "Disconnected. For Plug, you might need to disconnect in your extension settings.";
                     console.log("wallet.js: Plug Wallet connection managed by extension. UI cleared.");
                 }
 
-                if (coinbaseWallet) {
-                    console.log("wallet.js: Coinbase Wallet UI state cleared (SDK instance reset).");
-                    coinbaseWallet = null;
+                // Disconnect from Web3-Onboard connected wallets
+                if (web3OnboardInstance) {
+                    const connectedWallets = web3OnboardInstance.state.get().wallets;
+                    if (connectedWallets.length > 0) {
+                        for (const wallet of connectedWallets) {
+                            await web3OnboardInstance.disconnectWallet({ label: wallet.label });
+                            console.log(`wallet.js: Disconnected from ${wallet.label}.`);
+                        }
+                    }
+                    console.log("wallet.js: Web3-Onboard wallets disconnected.");
                 }
 
+                // Call the global updateUI function (defined in main.js) to reset the entire interface.
                 if (window.updateUI) {
                     console.log("wallet.js: Calling window.updateUI(null) for global reset.");
                     window.updateUI(null);

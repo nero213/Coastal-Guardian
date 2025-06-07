@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coastal Protection - Simple Responsive Login</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:400;600;700&display=swap"
         rel="stylesheet">
-    <!-- REMOVE THIS OLD WALLETLINK SCRIPT: <script src="https://cdn.jsdelivr.net/npm/walletlink@2/dist/walletlink.min.js"></script> -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -145,10 +144,17 @@
             </div>
         </div>
     </div>
-    <!-- IMPORTANT: Load Coinbase Wallet SDK as a regular script BEFORE wallet.js -->
-    <script src="https://unpkg.com/@coinbase/wallet-sdk@4.3.4/dist/index.js"></script>
+    <!-- IMPORTANT: Load Web3-Onboard core and Coinbase Wallet module as ES Modules -->
+    <script type="module">
+        import init from "https://esm.sh/@web3-onboard/core@2";
+        import coinbaseWalletModule from "https://esm.sh/@web3-onboard/coinbase@2";
+
+        // Expose init and coinbaseWalletModule globally for wallet.js to access
+        window.initWeb3Onboard = init;
+        window.coinbaseWalletModuleWeb3Onboard = coinbaseWalletModule;
+    </script>
     <!-- wallet.js should be a regular script as it uses a global variable from the SDK -->
-    <script  src="wallet.js"></script>
+    <script src="wallet.js"></script>
     <!-- main.js can be a module -->
     <script type="module" src="main.js"></script>
 </body>
