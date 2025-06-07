@@ -145,35 +145,8 @@
             </div>
         </div>
     </div>
-    <script>
-        // Initialize WalletLink
-        const walletLink = new WalletLink({
-            appName: "CoastalGuard",
-            appLogoUrl: "https://your-app-logo.png"
-        });
-
-        // Coinbase Wallet integration with WalletLink
-        document.getElementById('connectCoinbaseWallet').addEventListener('click', async () => {
-            try {
-                const eth = walletLink.makeWeb3Provider(
-                    "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
-                    1
-                );
-
-                const accounts = await eth.enable();
-                const walletAddress = accounts[0];
-
-                document.getElementById('walletStatus').textContent = `Connected: ${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`;
-                document.getElementById('disconnectWalletButton').style.display = 'block';
-
-                console.log('Connected with Coinbase Wallet:', walletAddress);
-            } catch (error) {
-                console.error('Coinbase Wallet connection error:', error);
-                document.getElementById('walletStatus').textContent = 'Connection failed. Please try again.';
-            }
-        });
-    </script>
     <script type="module" src="main.js"></script>
+    <script type="module" src="wallet.js"></script>
 </body>
 
 </html>
