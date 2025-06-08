@@ -85,7 +85,7 @@
                         <a href="#" class="forgot-link">Forgot password?</a>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" onclick="window.location.href='pages/dashboard.html'">
                         Sign In (Traditional)
                     </button>
                 </form>
@@ -115,48 +115,58 @@
 
                 <div class="wallet-login">
 
-                    <button class="wallet-btn" id="connectCoinbaseWallet">
-                        <img src="https://cdn.iconscout.com/icon/free/png-256/coinbase-4-569470.png"
-                            alt="Coinbase Wallet" style="height:1.2em;vertical-align:middle;margin-right:0.5em;">
-                        Connect Coinbase Wallet
-                    </button>
+                    <div class="wallet-login">
+                        <!-- Replace individual wallet buttons with this: -->
+                        <button class="wallet-btn" id="connectWeb3Wallet">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
+                                <path
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z" />
+                            </svg>
+                            Connect Web3 Wallet
+                        </button>
 
-                    <button class="wallet-btn" id="connectIIButton">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
-                            <path
-                                d="M2 7a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7zm15 4a1 1 0 1 0 0 2h3v-2h-3z" />
-                        </svg>
-                        Connect Internet Identity
-                    </button>
 
-                    <button type="button" class="wallet-btn" id="disconnectWalletButton" style="display: none;">
-                        Disconnect Wallet
-                    </button>
-                    <div id="walletStatus" style="margin-top: 10px; font-size: 0.9em; color: #555;"></div>
-                    <div id="principalId" style="font-size: 0.8em; color: #777;"></div>
-                </div>
 
-                <div class="login-footer">
-                    <p class="signup-text">
-                        Don't have an account? <a href="pages/register.html" class="signup-link">Sign up</a>
-                    </p>
+                        <button class="wallet-btn" id="connectIIButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000000">
+                                <path
+                                    d="M2 7a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7zm15 4a1 1 0 1 0 0 2h3v-2h-3z" />
+                            </svg>
+                            Connect Internet Identity
+                        </button>
+
+                        <button type="button" class="wallet-btn" id="disconnectWalletButton" style="display: none;">
+                            Disconnect Wallet
+                        </button>
+                        <div id="walletStatus" style="margin-top: 10px; font-size: 0.9em; color: #555;"></div>
+                        <div id="principalId" style="font-size: 0.8em; color: #777;"></div>
+                    </div>
+
+                    <div class="login-footer">
+                        <p class="signup-text">
+                            Don't have an account? <a href="pages/register.html" class="signup-link">Sign up</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- IMPORTANT: Load Web3-Onboard core and Coinbase Wallet module as ES Modules -->
-    <script type="module">
-        import init from "https://esm.sh/@web3-onboard/core@2";
-        import coinbaseWalletModule from "https://esm.sh/@web3-onboard/coinbase@2";
+        <!-- IMPORTANT: Load Web3-Onboard core and Coinbase Wallet module as ES Modules -->
+        <script type="module">
+            import okxWalletModule from "https://esm.sh/@web3-onboard/okx@2";
+            window.okxWalletModuleWeb3Onboard = okxWalletModule;
+        </script>
+        <script type="module">
+            import init from "https://esm.sh/@web3-onboard/core@2";
+            import coinbaseWalletModule from "https://esm.sh/@web3-onboard/coinbase@2";
 
-        // Expose init and coinbaseWalletModule globally for wallet.js to access
-        window.initWeb3Onboard = init;
-        window.coinbaseWalletModuleWeb3Onboard = coinbaseWalletModule;
-    </script>
-    <!-- wallet.js should be a regular script as it uses a global variable from the SDK -->
-    <script src="wallet.js"></script>
-    <!-- main.js can be a module -->
-    <script type="module" src="main.js"></script>
+            // Expose init and coinbaseWalletModule globally for wallet.js to access
+            window.initWeb3Onboard = init;
+            window.coinbaseWalletModuleWeb3Onboard = coinbaseWalletModule;
+        </script>
+        <!-- wallet.js should be a regular script as it uses a global variable from the SDK -->
+        <script src="wallet.js"></script>
+        <!-- main.js can be a module -->
+        <script type="module" src="main.js"></script>
 </body>
 
 </html>

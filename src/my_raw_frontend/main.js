@@ -1,6 +1,11 @@
 // src/my_raw_frontend/main.js
 // This script handles Internet Identity and Plug Wallet connections.
 
+// --- Environment Configuration ---
+// Set to 'true' when building/deploying to the IC Mainnet, 'false' for local development.
+// You MUST update the mainnet canister IDs below if you set this to true.
+const IS_MAINNET = false; // <--- Toggle this flag!
+
 // Import necessary DFINITY modules from CDN.
 import { AuthClient } from "https://esm.sh/@dfinity/auth-client@latest";
 import { Principal } from "https://esm.sh/@dfinity/principal@latest";
@@ -24,19 +29,23 @@ window.authClientInstance = authClientInstance;
 
 // --- Configuration Constants ---
 // Dashboard URL after successful login.
-// IMPORTANT: For mainnet deployment, change '.localhost:4943' to '.ic0.app'.
-const DASHBOARD_URL = "http://u6s2n-gx777-77774-qaaba-cai.localhost:4943/pages/dashboard.html";
+const DASHBOARD_URL = IS_MAINNET
+    ? "pages/dashboard.html"
+    : "pages/dashboard.html"; // Your local frontend canister ID
 
 // Official Internet Identity provider URL.
-const II_IDENTITY_PROVIDER = "https://identity.ic0.app";
+const II_IDENTITY_PROVIDER = "https://identity.ic0.app"; // This is always mainnet
 
 // Whitelist of canister IDs that Plug Wallet is allowed to interact with.
-// IMPORTANT: Replace "uqqxf-5h777-77774-qaaaa-cai" with your actual frontend canister ID.
-// This is crucial for Plug to recognize your DApp.
-const PLUG_WHITELIST_CANISTER_ID = ["uqqxf-5h777-77774-qaaaa-cai"];
+// IMPORTANT: Replace with your actual mainnet frontend and backend canister IDs when IS_MAINNET is true.
+const PLUG_WHITELIST_CANISTER_ID = IS_MAINNET
+    ? ["<YOUR_MAINNET_FRONTEND_CANISTER_ID>", "<YOUR_MAINNET_BACKEND_CANISTER_ID_IF_ANY>"] // Replace with your mainnet IDs
+    : ["uqqxf-5h777-77774-qaaaa-cai", "uxrrr-q7777-77774-qaaaq-cai"]; // Your local frontend and backend canister IDs
 
 // Host for Plug Wallet connection (local replica vs. mainnet).
-const PLUG_HOST = "http://localhost:4943"; // Use "https://ic0.app" for mainnet.
+const PLUG_HOST = IS_MAINNET
+    ? "https://ic0.app"
+    : "http://localhost:4943";
 
 // --- Utility Functions ---
 
@@ -50,8 +59,10 @@ async function initializeAuthClient() {
         try {
             authClientInstance = await AuthClient.create({
                 idleOptions: {
-                    disableIdle: true, // Keep session alive indefinitely for development ease
-                    // For production, consider: idleTimeout: 1000 * 60 * 60 * 24, // 24 hours
+                    // For local development, disable idle for ease of use.
+                    // For production (mainnet), set a reasonable timeout for security.
+                    disableIdle: !IS_MAINNET, // If NOT mainnet, disable idle.
+                    idleTimeout: IS_MAINNET ? 1000 * 60 * 60 * 24 : undefined, // 24 hours for mainnet
                     // and disableDefaultIdleCallback: true if handling logout manually.
                 }
             });
@@ -104,10 +115,20 @@ window.updateUI = async function (principal = null) {
         if (currentDisconnectWalletButton) currentDisconnectWalletButton.style.display = "inline-block";
 
         // Redirect to the dashboard if not already there.
-        if (window.location.href !== DASHBOARD_URL) {
-            console.log("Redirecting to dashboard:", DASHBOARD_URL);
-            window.location.href = DASHBOARD_URL;
+        // Adjust the redirection logic to use current origin for local dev, or the full mainnet URL.
+        const currentPath = window.location.pathname + window.location.search;
+        const targetPath = IS_MAINNET ? `pages/dashboard.html` : `/${DASHBOARD_URL}`;
+        const fullTargetUrl = IS_MAINNET
+            ? `https://${await window.ic.agent.getCanisterId() || 'invalid-canister-id'}.ic0.app${targetPath}` // This is a bit tricky, might need direct canister ID from a config if agent isn't available
+            : `${window.location.origin}/${DASHBOARD_URL}`;
+
+        // A more robust redirect could be to check if the current URL starts with the expected dashboard path
+        // and only redirect if it doesn't, or if the current URL is the root.
+        if (!currentPath.includes('pages/dashboard.html')) {
+            console.log("Redirecting to dashboard:", fullTargetUrl);
+            window.location.href = fullTargetUrl;
         }
+
     } else {
         // Reset the UI to show connection buttons and clear status.
         if (currentPrincipalIdDiv) currentPrincipalIdDiv.innerText = "";
@@ -158,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         console.error("Internet Identity login error:", err);
                         if (walletStatus) walletStatus.innerText = "❌ Internet Identity login failed: " + err;
                     },
-                    maxTimeToLive: BigInt(5 * 60 * 1000 * 1000 * 1000), // 5 minutes in nanoseconds
+                    maxTimeToLive: BigInt(5 * 60 * 1000 * 1000 * 1000), // 5 minutes in nanoseconds (consider adjusting for prod)
                 });
             } catch (err) {
                 console.error("Internet Identity login exception:", err);
