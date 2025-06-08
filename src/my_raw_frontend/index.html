@@ -156,6 +156,10 @@
             window.okxWalletModuleWeb3Onboard = okxWalletModule;
         </script>
         <script type="module">
+            import injectedWalletsModule from "https://esm.sh/@web3-onboard/injected-wallets@2";
+            window.metamaskWalletModuleWeb3Onboard = injectedWalletsModule;
+        </script>
+        <script type="module">
             import init from "https://esm.sh/@web3-onboard/core@2";
             import coinbaseWalletModule from "https://esm.sh/@web3-onboard/coinbase@2";
 
