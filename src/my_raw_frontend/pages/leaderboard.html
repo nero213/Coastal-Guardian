@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coastal Conservation Leaderboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/leaderboard.css">
+</head>
+
+<body>
+    <!-- Navigation Bar with Return and Logout Buttons -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Coastal Guardians</a>
+            <div class="nav-actions">
+                <button class="nav-btn" onclick="window.location.href='../index.html'">
+                    <span>←</span> Return to Dashboard
+                </button>
+                <button class="nav-btn logout" onclick="window.location.href='dashboard.html'">
+                    Logout <span>⏻</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🌊 Coastal Guardians Leaderboard</h1>
+            <p class="subtitle">Celebrating ocean heroes making waves in coastal conservation through verified impact
+                actions</p>
+        </header>
+
+        <!-- Stats Grid - Similar to your index.html -->
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <span class="stat-icon">👥</span>
+                <div class="stat-value" id="totalGuardians">247</div>
+                <div class="stat-label">Active Guardians</div>
+            </div>
+            <div class="stat-card fade-in">
+                <span class="stat-icon">🏆</span>
+                <div class="stat-value" id="totalNFTs">1,234</div>
+                <div class="stat-label">Soulbound NFTs</div>
+            </div>
+            <div class="stat-card fade-in">
+                <span class="stat-icon">🌱</span>
+                <div class="stat-value" id="totalActions">1,892</div>
+                <div class="stat-label">Conservation Actions</div>
+            </div>
+            <div class="stat-card fade-in">
+                <span class="stat-icon">🌊</span>
+                <div class="stat-value" id="coastlineProtected">156</div>
+                <div class="stat-label">Miles Protected</div>
+            </div>
+            <div class="stat-card fade-in">
+                <span class="stat-icon">🪙</span>
+                <div class="stat-value" id="totalCoins">12.5k</div>
+                <div class="stat-label">Eco-Coins Earned</div>
+            </div>
+            <div class="stat-card fade-in">
+                <span class="stat-icon">🔥</span>
+                <div class="stat-value" id="carbonOffset">2.4k</div>
+                <div class="stat-label">Tons CO₂ Offset</div>
+            </div>
+        </div>
+
+        <div class="leaderboard-container">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Time</button>
+                <button class="filter-btn" data-filter="monthly">This Month</button>
+                <button class="filter-btn" data-filter="weekly">This Week</button>
+                <button class="filter-btn" data-filter="cleanup">Cleanup Heroes</button>
+                <button class="filter-btn" data-filter="awareness">Awareness Champions</button>
+            </div>
+
+            <div class="podium" id="podium">
+                <!-- Top 3 will be populated by JavaScript -->
+            </div>
+
+            <div class="leaderboard-list">
+                <div class="list-header">
+                    <div>Rank</div>
+                    <div>Guardian</div>
+                    <div>Impact Score</div>
+                    <div>Actions</div>
+                    <div>Trend</div>
+                </div>
+
+                <div id="guardiansList">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading coastal guardians...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="nft-preview" id="nftPreview">
+        <button class="nft-preview-close" onclick="closeNFTPreview()">&times;</button>
+        <div class="nft-image" id="nftImage">🏆</div>
+        <div class="nft-details">
+            <h3 id="nftTitle">Ocean Guardian NFT</h3>
+            <div class="nft-attributes">
+                <div class="nft-attribute">
+                    <div class="attribute-value" id="nftLevel">Level 5</div>
+                    <div class="attribute-label">Guardian Level</div>
+                </div>
+                <div class="nft-attribute">
+                    <div class="attribute-value" id="nftCollection">Ocean Protector</div>
+                    <div class="attribute-label">NFT Collection</div>
+                </div>
+                <div class="nft-attribute">
+                    <div class="attribute-value" id="nftCount">5</div>
+                    <div class="attribute-label">NFTs Owned</div>
+                </div>
+                <div class="nft-attribute">
+                    <div class="attribute-value" id="nftImpact">2,450</div>
+                    <div class="attribute-label">Impact Score</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/leaderboard.js">
+
+    </script>
+</body>
+
+</html>

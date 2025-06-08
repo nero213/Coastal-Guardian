@@ -12,7 +12,7 @@
       ],
       "build": [],
       "declarations": {
-        "output": ""
+        "output": "src/declaration"
       },
       "headers": [
         {
